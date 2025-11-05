@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAJJER</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    @font-face {
+      font-family: "Sao Torpes";
+      src: url("MAJJER/SaoTorpes.otf") format("opentype");
+    }
+
+    body {
+      background-color: #ffffff;
+      font-family: "Sao Torpes";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      animation: bgToBlack 5s forwards;
+    }
+
+    .intro {
+      text-align: center;
+      position: fixed;
+      width: auto;
+      height: auto;
+    }
+
+    h1 {
+      color: #f97300;
+      font-size: 275px;
+      display: inline-block;
+    }
+
+    .M { animation: slideUp 3s ease forwards; }
+    .A { animation: slideUp 3.5s ease forwards; }
+    .J { animation: slideUp 4s ease forwards; }
+    #J2 { animation: slideUp 4.5s ease forwards; }
+    .E { animation: slideUp 5s ease forwards; }
+    .R { animation: slideUp 5.5s ease forwards; }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(200px);
+        opacity: 0;
+      }
+      40% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-750px);
+      }
+    }
+
+    @keyframes bgToBlack {
+      0%, 75% {
+        background-color: #ffffff;
+      }
+      100% {
+        background-color: #000000;
+      }
+    }
+
+    /* --- NAVBAR BULLE FLOTTANTE --- */
+    .navbar-bubble {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      background: #14141499;
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      border: 1px solid #ff7a0040;
+      box-shadow: 0 8px 25px #0000004d;
+      padding: 0.5rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      z-index: 1000;
+    }
+
+    .navbar-bubble.visible {
+      opacity: 1;
+    }
+
+    .navbar-brand {
+      color: #ff7a00;
+      font-weight: bold;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    /* --- LIENS DANS DES BULLES --- */
+    .nav-item {
+      display: inline-block;
+      margin: 0 5px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: #ffffff0d;
+      backdrop-filter: blur(6px);
+      border: 1px solid #ffffff14;
+      box-shadow: inset 0 1px 4px #ffffff26,
+                  0 2px 5px #00000066;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .nav-item::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -50%;
+      width: 200%;
+      height: 300%;
+      background: linear-gradient(120deg, #ffffff33, transparent, #ffffff33);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-item:hover::before {
+      opacity: 1;
+      animation: shine 1s forwards;
+    }
+
+    @keyframes shine {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: #ff7a0040;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    .btn-orange {
+      background: linear-gradient(145deg, #ff7a00, #ff6a00);
+      color: white;
+      border-radius: 30px;
+      padding: 8px 22px;
+      border: none;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(255, 122, 0, 0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-orange::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -50%;
+      width: 200%;
+      height: 300%;
+      background: linear-gradient(120deg, #ffffff4d, transparent, #ffffff4d);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .btn-orange:hover::before {
+      opacity: 1;
+      animation: shine 1s forwards;
+    }
+
+    .btn-orange:hover {
+      transform: scale(1.07);
+      box-shadow: 0 4px 15px #ff7a0080;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300vh; 
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    main.visible {
+      opacity: 1;
+    }
+
+    /* ANIMATIONS PHONE */
+    @keyframes SpinZoomIn {
+      from { transform: rotateZ(-75deg) scale(0.8); }
+      to { transform: rotateZ(0deg) scale(1.2); }
+    }
+
+    @keyframes SpinZoomOut {
+      from { transform: rotateZ(0deg) scale(1.2); }
+      to { transform: rotateZ(-75deg) scale(0.8); }
+    }
+
+    .phone {
+      width: 300px;
+      height: auto;
+      transform-origin: center;
+      transform: rotateZ(0deg) scale(1);
+      transition: transform 0.5s ease;
+    }
+
+    .phone.animate-in {
+      animation: SpinZoomIn 1s ease-out forwards;
+    }
+    .phone.animate-out {
+      animation: SpinZoomOut 1s ease-out forwards;
+    }
+    .hidden {
+      display: none !important;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="intro">
+    <h1 class="M">M</h1>
+    <h1 class="A">A</h1>
+    <h1 class="J">J</h1>
+    <h1 class="J" id="J2">J</h1>
+    <h1 class="E">E</h1>
+    <h1 class="R">R</h1>
+  </div>
+
+  <nav class="navbar-bubble" id="majjerNav">
+    <div class="navbar-brand">MAJJER</div>
+    <div class="d-flex align-items-center">
+      <div class="nav-item"><a href="#" class="nav-link active">Home</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Features</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Pricing</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">Download</a></div>
+      <div class="nav-item"><a href="#" class="nav-link">More</a></div>
+    </div>
+    <button class="btn-orange">Get Started</button>
+  </nav>
+
+  <main>
+    <section class="center-content" id="img1">
+      <img src="iphonemajjer.png" alt="MAJJER App Preview" class="phone"/>
+    </section>
+  </main>
+
+  <script>
+    const intro = document.querySelector(".intro");
+    const nav = document.getElementById("majjerNav");
+    const main = document.querySelector("main");
+    const phoneImg = document.querySelector(".phone");
+
+    setTimeout(() => {
+      intro.classList.add("hidden");
+      nav.classList.add("visible");
+      main.classList.add("visible");
+      document.body.style.overflow = "auto";
+      document.body.style.backgroundColor = "#000000";
+
+      let hasPlayed = false;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            phoneImg.classList.remove("animate-in");
+            phoneImg.classList.add("animate-out");
+            hasPlayed = true;
+          } else if (!entry.isIntersecting) {
+            phoneImg.classList.remove("animate-out");
+            phoneImg.classList.add("animate-in");
+            hasPlayed = false;
+          }
+        });
+      }, { threshold: 0.6 });
+
+      observer.observe(phoneImg);
+    }, 5500);
+
+  </script>
+</body>
+</html>

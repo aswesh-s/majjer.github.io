@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAJJER</title>
+    <link rel="stylesheet" href="majjerai.css">
+</head>
+
+<body>
+    <div class="intro">
+        <h1 class="M" id="M">M</h1>
+        <h1 class="A" id="A">A</h1>
+        <h1 class="J" id="J">J</h1>
+        <h1 class="J" id="J2">J</h1>
+        <h1 class="E" id="E">E</h1>
+        <h1 class="R" id="R">R</h1>
+    </div> 
+
+    <main>
+        <h2>This will be rayanns code</h2>
+    </main>
+
+
+    <script>
+        const intro = document.querySelector('.intro');
+        const main = document.querySelector('main');
+
+        setTimeout(() => {
+            intro.classList.add('hidden');
+            main.classList.add('visible');
+            document.body.style.backgroundColor = '#000000';
+            document.body.style.overflow = 'auto';
+        }, 5500); // Adjust the timeout duration as needed
+    </script>
+    
+</body>
+</html>
