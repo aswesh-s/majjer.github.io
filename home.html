@@ -1,0 +1,4575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAJJER</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Allura&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    /* ========== VARIABLES DE COULEURS ========== */
+    :root {
+      --orange-main: #ff7a00;
+      --orange-dark: #ff6a00;
+      --orange-light: #f97300;
+      --bordeaux-light: #A03D4F;
+      --bordeaux-medium: #8B2E3D;
+      --bordeaux-dark: #7A1F2E;
+    }
+
+    @font-face {
+      font-family: "Sao Torpes";
+      src: url("MAJJER/SaoTorpes.otf") format("opentype");
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #ffffff;
+      font-family: "Sao Torpes";
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      animation: bgToBlack 5s forwards;
+      cursor: url("images/majjer_cursor.png"), auto;
+    }
+
+    /* ========== CURSEUR PERSONNALISÉ ========== */
+    /* Curseur par défaut sur tout le site */
+    * {
+      cursor: url("images/majjer_cursor.png"), auto;
+    }
+
+    /* Curseur personnalisé sur les éléments interactifs */
+    a,
+    button,
+    .nav-link,
+    .btn-orange,
+    .text-bubble,
+    .feature-card,
+    input[type="button"],
+    input[type="submit"],
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select,
+    [role="button"],
+    [onclick],
+    label[for] {
+      cursor: url("images/majjer_cursor.png"), pointer !important;
+    }
+
+    /* Curseur grab pour les zones de défilement */
+    .features-cards-container {
+      cursor: grab;
+    }
+
+    .features-cards-container:active,
+    .features-cards-container.dragging {
+      cursor: grabbing !important;
+    }
+
+    /* Désactiver le curseur personnalisé sur mobile/tactile */
+    @media (hover: none) and (pointer: coarse) {
+      body,
+      * {
+        cursor: auto !important;
+      }
+      
+      a,
+      button,
+      .nav-link,
+      .btn-orange {
+        cursor: pointer !important;
+      }
+    }
+
+    /* --- EFFET DE LUMIÈRE CURSEUR --- */
+    .cursor-glow {
+      position: fixed;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 122, 0, 0.15) 0%,
+        rgba(255, 122, 0, 0.08) 30%,
+        transparent 70%
+      );
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+      opacity: 0;
+    }
+
+    .cursor-glow.active {
+      opacity: 1;
+    }
+
+    .cursor-glow.intensified {
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(
+        circle,
+        rgba(255, 122, 0, 0.4) 0%,
+        rgba(255, 122, 0, 0.25) 25%,
+        rgba(255, 122, 0, 0.15) 40%,
+        rgba(255, 122, 0, 0.08) 50%,
+        transparent 70%
+      );
+      opacity: 1;
+    }
+
+    .intro {
+      text-align: center;
+      position: fixed;
+      width: auto;
+      height: auto;
+      top: 50%;
+      padding-left: 33.5px;
+      }
+
+    h1 {
+      color: #f97300;
+      font-size: 275px;
+      display: inline-block;
+      text-shadow: 0 0 20px rgba(255, 122, 0, 0.3);
+    }
+
+    .M { animation: slideUp 3s ease forwards; }
+    .A { animation: slideUp 3.5s ease forwards; }
+    .J { animation: slideUp 4s ease forwards; }
+    #J2 { animation: slideUp 4.5s ease forwards; }
+    .E { animation: slideUp 5s ease forwards; }
+    .R { animation: slideUp 5.5s ease forwards; }
+
+    @keyframes slideUp {
+      0% {
+        transform: translateY(200px);
+        opacity: 0;
+      }
+      40% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-750px);
+      }
+    }
+
+    @keyframes bgToBlack {
+      0%, 75% {
+        background-color: #ffffff;
+      }
+      100% {
+        background-color: #000000;
+      }
+    }
+
+    /* --- NAVBAR BULLE FLOTTANTE --- */
+    .navbar-bubble {
+       position: fixed;
+        top: 35px;
+       left: 50%;
+       transform: translateX(-50%);
+        width: 68%;
+        max-width: 1100px;
+        background: linear-gradient(135deg,
+          rgba(18, 18, 18, 0.55) 0%,
+          rgba(38, 24, 12, 0.38) 55%,
+          rgba(18, 18, 18, 0.55) 100%
+        );
+        backdrop-filter: blur(16px);
+       border-radius: 50px;
+        border: 1px solid rgba(255, 122, 0, 0.22);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35),
+                    0 0 35px rgba(255, 122, 0, 0.16),
+                    inset 0 0 30px rgba(255, 122, 0, 0.08);
+       padding: 0.5rem 1.2rem;
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       opacity: 0;
+       transition: opacity 1.5s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.45s ease;
+       z-index: 1000;
+     }
+ 
+     .navbar-bubble.visible {
+       opacity: 1;
+     }
+
+    .navbar-bubble.nav-visible {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .navbar-bubble.nav-hidden {
+      transform: translate(-50%, -120%);
+      opacity: 0;
+    }
+ 
+     .navbar-bubble.scrolling {
+       box-shadow: 0 0 20px rgba(255, 122, 0, 0.8),
+                   0 0 40px rgba(255, 122, 0, 0.6),
+                   0 0 60px rgba(255, 122, 0, 0.4),
+                   0 0 15px rgba(255, 122, 0, 0.3);
+       border-color: #ff7a00;
+       animation: navbar-glow-pulse 2s ease-in-out infinite;
+     }
+ 
+     @keyframes navbar-glow-pulse {
+       0%, 100% {
+         box-shadow: 0 0 20px rgba(255, 122, 0, 0.8),
+                     0 0 40px rgba(255, 122, 0, 0.6),
+                     0 0 60px rgba(255, 122, 0, 0.4),
+                     0 0 15px rgba(255, 122, 0, 0.3);
+       }
+       50% {
+         box-shadow: 0 0 30px rgba(255, 122, 0, 1),
+                     0 0 60px rgba(255, 122, 0, 0.8),
+                     0 0 90px rgba(255, 122, 0, 0.6),
+                     0 0 25px rgba(255, 122, 0, 0.4);
+       }
+     }
+
+    @media (max-width: 720px) {
+      .navbar-bubble {
+        transition: opacity 1.2s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.55s ease;
+      }
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .navbar-brand img {
+      height: 35px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* --- LIENS DANS DES BULLES --- */
+    .nav-item {
+      display: inline-block;
+      margin: 0 5px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: transparent;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .nav-item::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -50%;
+      width: 200%;
+      height: 300%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.2), transparent, rgba(255,255,255,0.2));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-item:hover::before {
+      opacity: 1;
+      animation: shine 1s forwards;
+    }
+
+    @keyframes shine {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      border-color: rgba(255, 122, 0, 0.3);
+    }
+
+    .nav-link.active {
+      background: linear-gradient(135deg, rgba(255, 122, 0, 0.3) 0%, rgba(255, 122, 0, 0.2) 100%);
+      color: #fff;
+      border-color: rgba(255, 122, 0, 0.5);
+      box-shadow: 0 2px 8px rgba(255, 122, 0, 0.2);
+    }
+
+    /* --- BOUTON GET STARTED --- */
+    .btn-orange {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #ff7a00 0%, #ff6a00 100%);
+      color: white;
+      border-radius: 30px;
+      padding: 8px 22px;
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-orange::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -50%;
+      width: 200%;
+      height: 300%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.3), transparent, rgba(255,255,255,0.3));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .btn-orange:hover::before {
+      opacity: 1;
+      animation: shine 1s forwards;
+    }
+
+    .btn-orange:hover {
+      transform: scale(1.07);
+      box-shadow: 0 4px 15px rgba(255, 122, 0, 0.5),
+                  0 0 12px rgba(255, 122, 0, 0.3);
+      background: linear-gradient(145deg, #ff7a00 0%, #ff6a00 100%);
+    }
+
+    /* --- MAIN & IMAGE --- */
+    main {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 120px;
+      min-height: 300vh; /* Plus de hauteur pour permettre le scroll */
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      position: relative;
+    }
+    main.visible {
+      opacity: 1;
+    }
+
+    /* --- MEET MAJJER --- */
+    .meet-majjer {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      font-weight: 500;
+      background: linear-gradient(135deg, rgba(255, 122, 0, 0.95) 0%, rgba(160, 61, 79, 0.85) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 0 20px;
+      opacity: 0;
+      letter-spacing: 2px;
+      position: relative;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .meet-majjer.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- TITRE PRINCIPAL --- */
+    .main-title {
+      background: linear-gradient(135deg, #ff7a00 0%, #ff6a00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 5rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 0 20px;
+      opacity: 0;
+      letter-spacing: 3px;
+      line-height: 1.2;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    
+    /* Very Large Screens (above 1920px) */
+    @media (min-width: 1920px) {
+      .features-cards-container {
+        max-width: 1400px;
+      }
+      
+      .phone {
+        width: 1920px;
+      }
+    }
+    
+    /* Large Tablets and Small Desktops (1024px - 1440px) */
+    @media (max-width: 1440px) {
+      .main-title {
+        font-size: 4.5rem;
+      }
+      
+      .phone {
+        width: 1500px;
+      }
+    }
+    
+    /* Tablets (768px - 1024px) */
+    @media (max-width: 1024px) {
+      .navbar-bubble {
+        width: 90%;
+        padding: 0.4rem 1rem;
+      }
+      
+      .navbar-brand img {
+        height: 30px;
+      }
+      
+      .nav-link {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+      }
+      
+      .btn-orange {
+        padding: 6px 18px;
+        font-size: 0.9rem;
+      }
+      
+      .main-title {
+        font-size: 3.5rem;
+        letter-spacing: 2px;
+      }
+      
+      .phone {
+        width: 1180px;
+      }
+      
+      .text-bubble {
+        max-width: 200px;
+        padding: 15px 20px;
+        font-size: 1rem;
+      }
+      
+      .features-title {
+        font-size: 3.5rem;
+      }
+    }
+    
+    /* Small Tablets and Large Phones (600px - 768px) */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 150px;
+      }
+      
+      .navbar-bubble {
+        width: 95%;
+        padding: 0.4rem 0.8rem;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .navbar-brand {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 5px;
+      }
+
+      .navbar-brand img {
+        height: 28px;
+      }
+      
+      .navbar-bubble > div {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      
+      .nav-item {
+        margin: 0 3px;
+      }
+      
+      .nav-link {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+      
+      .btn-orange {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+        margin-top: 5px;
+      }
+      
+      main {
+        padding-top: 100px;
+        min-height: 250vh;
+      }
+      
+      .meet-majjer {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+
+      .main-title {
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+        margin-bottom: 25px;
+      }
+      
+      .phone-container {
+        padding: 40px 0 50px 0;
+      }
+      
+      .phone {
+        width: 1540px;
+        height: auto;
+        opacity: 1;
+        transform-origin: center;
+        animation: none; /* activée après intro */
+        transition: transform 0.3s ease;
+        position: relative;
+        z-index: 10;
+        border-radius: 20px;
+      }
+      
+      .text-bubble {
+        max-width: 180px;
+        padding: 12px 18px;
+        font-size: 0.9rem;
+      }
+      
+      .text-bubble.left {
+        left: 2%;
+      }
+      
+      .text-bubble.right {
+        right: 2%;
+      }
+      
+      .features-title {
+        font-size: 2.5rem;
+        margin-bottom: 50px;
+      }
+      
+      .features-cards-container {
+        height: 450px;
+      }
+      
+      .feature-card {
+        width: 280px;
+        height: 380px;
+      }
+    }
+
+    main.visible .main-title {
+      opacity: 1;
+      animation: slideFromLeft 1.5s ease-out forwards, twinkle-orange 3s ease-in-out 1.5s infinite;
+    }
+
+    @keyframes slideFromLeft {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes twinkle-orange {
+      0%, 100% {
+        text-shadow: 0 0 5px rgba(255, 122, 0, 0.3),
+                     0 0 10px rgba(255, 122, 0, 0.2),
+                     0 0 15px rgba(255, 122, 0, 0.1),
+                     0 0 8px rgba(255, 122, 0, 0.15);
+      }
+      50% {
+        text-shadow: 0 0 10px rgba(255, 122, 0, 0.6),
+                     0 0 20px rgba(255, 122, 0, 0.4),
+                     0 0 30px rgba(255, 122, 0, 0.2),
+                     0 0 15px rgba(255, 122, 0, 0.25);
+      }
+    }
+    @keyframes RotatingPhone {
+      from { transform: rotateZ(-75deg); }
+      to { transform: rotateZ(0deg); }
+    }
+    
+
+    .phone-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 50px 0 0px 0;
+      min-height: 100vh;
+    }
+
+    .phone {
+      width: 1540px;
+      height: auto;
+      opacity: 1;
+      transform-origin: center;
+      animation: none; /* activée après intro */
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 10;
+      border-radius: 20px;
+    }
+
+    .phone:hover {
+      transform: scale(1.1);
+    }
+
+    /* --- BULLES DE TEXTE --- */
+    .text-bubble {
+      position: absolute;
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      border: 1px solid rgba(255, 122, 0, 0.25);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3),
+                  0 0 10px rgba(255, 122, 0, 0.1);
+      padding: 20px 30px;
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      max-width: 250px;
+      text-align: left;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 250, 248, 0.95) 100%);
+      color: #111111;
+    }
+
+    .text-bubble.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .text-bubble:hover {
+      transform: translateY(0) scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 122, 0, 0.8),
+                  0 0 40px rgba(255, 122, 0, 0.6),
+                  0 0 60px rgba(255, 122, 0, 0.4),
+                  0 0 15px rgba(255, 122, 0, 0.3);
+      border-color: #ff7a00;
+      animation: bubble-glow-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes bubble-glow-pulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 122, 0, 0.8),
+                    0 0 40px rgba(255, 122, 0, 0.6),
+                    0 0 60px rgba(255, 122, 0, 0.4),
+                    0 0 15px rgba(255, 122, 0, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(255, 122, 0, 1),
+                    0 0 60px rgba(255, 122, 0, 0.8),
+                    0 0 90px rgba(255, 122, 0, 0.6),
+                    0 0 25px rgba(255, 122, 0, 0.4);
+      }
+    }
+
+    .text-bubble.left {
+      left: 5%;
+    }
+
+    .text-bubble.right {
+      right: 5%;
+    }
+
+    .text-bubble:nth-of-type(1) {
+      top: 18%;
+    }
+
+    .text-bubble:nth-of-type(2) {
+      top: 30%;
+    }
+
+    .text-bubble:nth-of-type(3) {
+      top: 50%;
+    }
+
+    .text-bubble:nth-of-type(4) {
+      top: 70%;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ========== SCROLL REVEAL ANIMATIONS ========== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Délais pour animations séquentielles */
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    .reveal-delay-5 {
+      transition-delay: 0.5s;
+    }
+
+    /* --- SECTION FEATURES --- */
+    #features {
+      min-height: 100vh;
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #000000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .features-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1400px;
+    }
+
+    .features-title { display: none; }
+
+    /* Labels replacing the title */
+    .features-labels { position: relative; height: 0; }
+    .features-label { position: absolute; top: 0; font-size: 4rem; font-weight: bold; letter-spacing: 2px; }
+    /* Interactive swipe text system */
+    .swipe-text {
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: var(--swipe-overlay, none), var(--swipe-base, linear-gradient(0deg, #ffffff, #ffffff));
+      transition: background 0.15s ease;
+    }
+    .swipe-white { --swipe-base: var(--swipe-base-current, linear-gradient(135deg, #ff7a00 0%, #ff6a00 100%)); }
+    .swipe-orange { --swipe-base: linear-gradient(0deg, #ffffff, #ffffff); }
+    .features-label-left { left: 5%; }
+    .features-label-right { right: 5%; }
+
+    /* --- STUDENT-BUILT SECTION --- */
+    #student-built {
+      width: 100%;
+      background: #000000;
+      padding: clamp(80px, 12vw, 140px) clamp(6vw, 12vw, 180px) clamp(90px, 10vw, 130px);
+      display: flex;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #student-built::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .student-built-inner {
+      width: min(1200px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(48px, 6vw, 70px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .student-built-intro {
+      max-width: 760px;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 2.5vw, 26px);
+    }
+
+    .student-built-badge {
+      align-self: flex-start;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: #dbe7ff;
+      background: linear-gradient(135deg, rgba(72, 90, 255, 0.22), rgba(72, 90, 255, 0.06));
+      border: 1px solid rgba(115, 138, 255, 0.4);
+      box-shadow: 0 10px 26px rgba(62, 80, 255, 0.25);
+    }
+
+    .student-built-title {
+      font-family: "Sao Torpes", sans-serif;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      line-height: 1.05;
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .student-built-typewriter {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      margin-left: 6px;
+    }
+
+    .student-built-typewriter .typewriter-text {
+      display: inline-block;
+      min-width: 9ch;
+      color: #ffffff;
+    }
+
+    .student-built-typewriter .typewriter-cursor {
+      width: 3px;
+      height: 1.2em;
+      margin: 0 10px;
+      background: #ffffff;
+      border-radius: 2px;
+      animation: blink-cursor 0.9s steps(1) infinite;
+      opacity: 0.75;
+    }
+
+    .student-built-typewriter .typewriter-cursor.typewriter-cursor--hold {
+      animation: none;
+      opacity: 0.6;
+    }
+
+    @keyframes blink-cursor {
+      0%, 45% { opacity: 0.9; }
+      50%, 100% { opacity: 0.1; }
+    }
+
+    .student-built-description {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      line-height: 1.75;
+      color: rgba(225, 229, 240, 0.78);
+      max-width: 640px;
+    }
+
+    .student-built-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: clamp(24px, 4vw, 40px);
+    }
+
+    .student-feature-card {
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 26px;
+      border: 1px solid rgba(255, 122, 0, 0.25);
+      padding: clamp(26px, 3.2vw, 34px);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .student-feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 32px 90px rgba(249, 115, 0, 0.28);
+    }
+
+    .student-feature-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 20%, rgba(255, 122, 0, 0.75), rgba(255, 140, 50, 0.2));
+      box-shadow: 0 18px 40px rgba(255, 122, 0, 0.35);
+    }
+
+    .student-feature-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.9);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .student-feature-title {
+      font-size: 1.15rem;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .student-feature-text {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: rgba(225, 225, 225, 0.78);
+    }
+
+    @media (max-width: 1024px) {
+      #student-built {
+        padding: clamp(70px, 12vw, 110px) clamp(5vw, 12vw, 150px) clamp(80px, 9vw, 110px);
+      }
+
+      .student-built-inner {
+        gap: 56px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .student-built-intro {
+        max-width: 100%;
+      }
+
+      .student-built-badge {
+        align-self: center;
+      }
+
+      .student-built-title {
+        text-align: center;
+      }
+
+      .student-built-typewriter {
+        margin-left: 12px;
+      }
+
+      .student-built-description {
+        text-align: center;
+        max-width: 100%;
+      }
+
+      .student-built-features {
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      }
+
+      .student-feature-card {
+        align-items: center;
+        text-align: center;
+      }
+
+      .student-feature-text {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 520px) {
+      #student-built {
+        padding: 70px 18px 80px;
+      }
+
+      .student-built-typewriter {
+        padding-left: 10px;
+        margin-left: 6px;
+      }
+
+      .student-feature-card {
+        padding: 24px;
+      }
+    }
+
+    /* --- FEATURE MAP --- */
+    #feature-map {
+      width: 100%;
+      padding: 100px 8vw 110px;
+      background: #000000;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-map-container {
+      width: min(1200px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+    }
+
+    .feature-map-top {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 60px;
+      align-items: center;
+    }
+
+    .feature-map-header {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .feature-map-title {
+      font-family: "Sao Torpes", sans-serif;
+      font-size: clamp(2.8rem, 4.2vw, 3.8rem);
+      line-height: 1.1;
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+
+    .feature-map-title .accent {
+      color: #ff7a00;
+    }
+
+    .feature-map-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.68);
+      max-width: 520px;
+    }
+
+    .feature-map-visual-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .feature-map-frame {
+      position: relative;
+      padding: 10px;
+      border-radius: 26px;
+      background: linear-gradient(140deg, rgba(255, 122, 0, 0.35), rgba(255, 122, 0, 0.05));
+      box-shadow: 0 40px 80px rgba(255, 122, 0, 0.15), 0 20px 40px rgba(0, 0, 0, 0.4);
+      transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.45s ease;
+    }
+
+    .feature-map-frame::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 20px;
+      border: 2px solid rgba(255, 122, 0, 0.4);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .feature-map-frame img {
+      display: block;
+      width: min(520px, 80vw);
+      border-radius: 20px;
+      border: 2px solid #ff7a00;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .feature-map-frame:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 56px 110px rgba(255, 122, 0, 0.22), 0 25px 55px rgba(0, 0, 0, 0.5);
+    }
+
+    .feature-map-subcopy {
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.76);
+      text-align: center;
+      max-width: 520px;
+    }
+
+    .feature-map-cta {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .feature-map-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 42px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff7a00 0%, #ff8c32 100%);
+      color: #0f0f0f;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-decoration: none;
+      box-shadow: 0 14px 32px rgba(255, 122, 0, 0.35);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .feature-map-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 44px rgba(255, 122, 0, 0.45);
+    }
+
+    @media (max-width: 1024px) {
+      #feature-map {
+        padding: 80px 6vw 90px;
+      }
+
+      .feature-map-container {
+        gap: 48px;
+      }
+
+      .feature-map-top {
+        gap: 48px;
+      }
+
+      .feature-map-cta {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 720px) {
+      #feature-map {
+        padding: 70px 5vw 80px;
+      }
+
+      .feature-map-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .feature-map-header {
+        align-items: center;
+      }
+
+      .feature-map-subtitle {
+        max-width: 90%;
+      }
+
+      .feature-map-cta {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .feature-map-frame {
+        padding: 8px;
+      }
+
+      .feature-map-frame::before {
+        inset: 12px;
+      }
+
+      .feature-map-frame img {
+        width: 100%;
+      }
+
+      .feature-map-button {
+        width: 100%;
+      }
+    }
+
+    /* Base gradients for existing elements */
+    .main-title.swipe-white { --swipe-base-current: linear-gradient(135deg, #ff7a00 0%, #ff6a00 100%); }
+    .meet-majjer.swipe-white { --swipe-base-current: linear-gradient(135deg, rgba(255,122,0,0.95) 0%, rgba(255,122,0,0.95) 100%); }
+    .features-label-left.swipe-white { --swipe-base-current: linear-gradient(0deg, #ff7a00, #ff7a00); }
+
+    .features-cards-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      height: auto;
+      perspective: 1000px;
+      margin: 0 auto;
+      margin-top: 200px;
+      margin-left: 100px;
+      gap: 40px;
+    }
+
+    .feature-card {
+      position: relative;
+      width: clamp(320px, 32vw, 440px);
+      min-height: 340px;
+      border-radius: 32px;
+      background: radial-gradient(circle at top, rgba(255, 122, 0, 0.08) 0%, rgba(15, 8, 0, 0.92) 55%, rgba(7, 7, 7, 0.96) 100%);
+      border: 1px solid rgba(255, 122, 0, 0.32);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+      transform-style: preserve-3d;
+      transition: transform 0.6s ease, box-shadow 0.6s ease, border-color 0.6s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.4rem;
+      text-align: left;
+      padding: clamp(32px, 4vw, 50px);
+      margin: 0 -90px;
+    }
+
+    .feature-card--image {
+      padding: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at center, rgba(255, 122, 0, 0.14) 0%, rgba(5, 5, 5, 0.96) 65%);
+      height: clamp(380px, 34vw, 460px);
+    }
+
+    .feature-card--image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .feature-card--image:hover img {
+      transform: scale(1.05);
+    }
+    
+    /* Override pour les cartes - ne pas utiliser le translateY de reveal */
+    .feature-card.reveal {
+      transform: inherit;
+      opacity: 0;
+    }
+
+    .feature-card:nth-child(1) {
+      transform: translateX(-50px) translateY(20px) rotate(-10deg);
+      z-index: 1;
+    }
+
+    .feature-card:nth-child(1).show {
+      transform: translateX(-50px) translateY(0) rotate(-10deg);
+      opacity: 1;
+    }
+
+    .feature-card:nth-child(2) {
+      transform: translateX(0) translateY(20px) scale(0.95);
+      z-index: 2;
+    }
+
+    .feature-card:nth-child(2).show {
+      transform: translateX(0) translateY(-20px) scale(1.05);
+      opacity: 1;
+    }
+
+    .feature-card:nth-child(3) {
+      transform: translateX(50px) translateY(20px) rotate(10deg);
+      z-index: 1;
+    }
+
+    .feature-card:nth-child(3).show {
+      transform: translateX(50px) translateY(0) rotate(10deg);
+      opacity: 1;
+    }
+
+    .feature-card:nth-child(1):hover {
+      transform: translateX(-50px) translateY(-10px) rotate(-10deg) scale(1.05) !important;
+      box-shadow: 0 0 30px rgba(255, 122, 0, 0.4),
+                  0 10px 40px rgba(0, 0, 0, 0.6),
+                  0 0 20px rgba(255, 122, 0, 0.2);
+      z-index: 10 !important;
+    }
+
+    .feature-card:nth-child(2):hover {
+      transform: translateX(0) translateY(-30px) scale(1.05) !important;
+      box-shadow: 0 0 30px rgba(255, 122, 0, 0.4),
+                  0 10px 40px rgba(0, 0, 0, 0.6),
+                  0 0 20px rgba(255, 122, 0, 0.2);
+      z-index: 10 !important;
+    }
+
+    .feature-card:nth-child(3):hover {
+      transform: translateX(50px) translateY(-10px) rotate(10deg) scale(1.05) !important;
+      box-shadow: 0 0 30px rgba(255, 122, 0, 0.4),
+                  0 10px 40px rgba(0, 0, 0, 0.6),
+                  0 0 20px rgba(255, 122, 0, 0.2);
+      z-index: 10 !important;
+    }
+
+    /* Medium Phones (480px - 600px) */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 120px;
+      }
+      
+      .navbar-bubble {
+        width: 98%;
+        padding: 0.3rem 0.6rem;
+        top: 10px;
+      }
+      
+      .navbar-brand img {
+        height: 26px;
+      }
+      
+      .nav-link {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+      }
+      
+      .btn-orange {
+        padding: 5px 14px;
+        font-size: 0.8rem;
+      }
+      
+      main {
+        padding-top: 80px;
+        min-height: 200vh;
+      }
+      
+      .meet-majjer {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+      }
+
+      .main-title {
+        font-size: 2rem;
+        padding: 0 15px;
+      }
+      
+      .phone-container {
+        padding: 20px 0 30px 0;
+      }
+      
+      .phone {
+        width: 1540px;
+        height: auto;
+        opacity: 1;
+        transform-origin: center;
+        animation: none; /* activée après intro */
+        transition: transform 0.3s ease;
+        position: relative;
+        z-index: 10;
+        border-radius: 20px;
+      }
+      
+      .text-bubble {
+        max-width: 150px;
+        padding: 10px 15px;
+        font-size: 0.85rem;
+      }
+      
+      .text-bubble.left {
+        left: 1%;
+      }
+      
+      .text-bubble.right {
+        right: 1%;
+      }
+      
+      #features {
+        padding: 30px 15px;
+      }
+      
+      .features-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+      }
+      
+      .features-cards-container {
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        justify-content: flex-start;
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .features-cards-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .feature-card {
+        position: relative;
+        width: 260px;
+        height: 360px;
+        flex: 0 0 auto;
+        left: auto;
+        top: auto;
+        margin: 0;
+        transform: none !important;
+        scroll-snap-align: center;
+        font-size: 1rem;
+        padding: 30px;
+      }
+
+      .feature-card:nth-child(1):hover,
+      .feature-card:nth-child(2):hover,
+      .feature-card:nth-child(3):hover {
+        transform: translateY(-10px) scale(1.05) !important;
+      }
+    }
+    
+    /* Small Phones (320px - 480px) */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 100px;
+      }
+      
+      .navbar-bubble {
+        width: 100%;
+        padding: 0.3rem 0.5rem;
+        top: 5px;
+        border-radius: 30px;
+      }
+      
+      .navbar-brand img {
+        height: 24px;
+      }
+      
+      .nav-item {
+        margin: 0 2px;
+      }
+      
+      .nav-link {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+      }
+      
+      .btn-orange {
+        padding: 4px 12px;
+        font-size: 0.75rem;
+      }
+      
+      main {
+        padding-top: 70px;
+        min-height: 180vh;
+      }
+      
+      .meet-majjer {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+      }
+
+      .main-title {
+        font-size: 1.75rem;
+        letter-spacing: 0.5px;
+        padding: 0 10px;
+        margin-bottom: 20px;
+      }
+      
+      .phone-container {
+        padding: 30px 0 40px 0;
+        min-height: 80vh;
+      }
+      
+      .phone {
+        width: 260px;
+      }
+      
+      .text-bubble {
+        max-width: 130px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        border-radius: 20px;
+      }
+      
+      .text-bubble.left {
+        left: 0.5%;
+      }
+      
+      .text-bubble.right {
+        right: 0.5%;
+      }
+      
+      #features {
+        padding: 30px 10px;
+      }
+      
+      .features-title {
+        font-size: 1.75rem;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+      }
+      
+      .features-cards-container {
+        padding: 15px;
+        gap: 15px;
+      }
+      
+      .feature-card {
+        width: 240px;
+        height: 340px;
+        font-size: 0.9rem;
+        padding: 25px;
+        border-radius: 25px;
+      }
+      
+      .cursor-glow {
+        width: 200px;
+        height: 200px;
+      }
+      
+      .cursor-glow.intensified {
+        width: 350px;
+        height: 350px;
+      }
+    }
+    
+    /* Very Small Phones (below 320px) */
+    @media (max-width: 320px) {
+      h1 {
+        font-size: 80px;
+      }
+      
+      .navbar-brand img {
+        height: 22px;
+      }
+      
+      .nav-link {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+      }
+      
+      .btn-orange {
+        padding: 3px 10px;
+        font-size: 0.7rem;
+      }
+      
+      .main-title {
+        font-size: 1.5rem;
+      }
+      
+      .phone {
+        width: 220px;
+      }
+      
+      .text-bubble {
+        max-width: 110px;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+      }
+      
+      .features-title {
+        font-size: 1.5rem;
+      }
+      
+      .feature-card {
+        width: 220px;
+        height: 320px;
+        font-size: 0.85rem;
+        padding: 20px;
+      }
+    }
+    
+    /* Landscape Orientation for Phones */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .navbar-bubble {
+        width: 95%;
+      }
+      
+      main {
+        padding-top: 80px;
+        min-height: 200vh;
+      }
+      
+      .phone-container {
+        padding: 20px 0 30px 0;
+      }
+      
+      .phone {
+        width: 300px;
+      }
+      
+      .features-cards-container {
+        height: 400px;
+      }
+      
+      .feature-card {
+        width: 250px;
+        height: 320px;
+      }
+    }
+    
+    /* Touch Device Optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .nav-link:hover,
+      .nav-link.active {
+        transform: none;
+      }
+      
+      .btn-orange:hover {
+        transform: none;
+      }
+      
+      .text-bubble:hover {
+        transform: translateY(0) scale(1.05);
+      }
+      
+      .feature-card:hover {
+        transform: translateY(-5px) scale(1.02) !important;
+      }
+      
+      /* Increase touch targets on mobile */
+      .nav-link {
+        min-height: 36px;
+        min-width: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .btn-orange {
+        min-height: 36px;
+        min-width: 80px;
+      }
+    }
+    
+    /* High DPI / Retina Display Optimizations */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .text-bubble,
+      .feature-card,
+      .navbar-bubble {
+        border-width: 0.5px;
+      }
+    }
+    
+    /* Print Styles */
+    @media print {
+      .navbar-bubble,
+      .cursor-glow,
+      .intro {
+        display: none !important;
+      }
+      
+      body {
+        background: white !important;
+        color: black !important;
+      }
+    }
+
+    .text-bubble-title {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ff7a00;
+      letter-spacing: 0.3px;
+    }
+
+    .text-bubble-body {
+      display: block;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #111111;
+      font-weight: 400;
+    }
+
+    /* --- MAJJER TESTIMONIALS MARQUEE --- */
+    #majjer-testimonials {
+      width: 100%;
+      padding: 40px 0 70px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .majjer-testimonials-track {
+      display: flex;
+      gap: 32px;
+      width: max-content;
+      animation: majjer-marquee 26s linear infinite;
+    }
+
+    .majjer-testimonial-card {
+      flex: 0 0 350px;
+      height: 180px;
+      padding: 28px;
+      border-radius: 20px;
+      background: rgba(14, 16, 22, 0.75);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: rgba(240, 242, 248, 0.92);
+      transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+    }
+
+    .majjer-testimonial-quote {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .majjer-testimonial-author {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.95rem;
+      color: rgba(200, 205, 220, 0.75);
+    }
+
+    .majjer-testimonial-author span:first-child {
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+    }
+
+    @keyframes majjer-marquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-50% - 16px));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .majjer-testimonial-card {
+        flex-basis: 280px;
+        height: 170px;
+        padding: 24px;
+      }
+
+      .majjer-testimonials-track {
+        gap: 24px;
+        animation-duration: 30s;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .majjer-testimonial-card {
+        flex-basis: 240px;
+        height: 160px;
+        padding: 20px;
+      }
+
+      .majjer-testimonial-quote {
+        font-size: 0.95rem;
+      }
+
+      .majjer-testimonial-author {
+        font-size: 0.85rem;
+      }
+    }
+
+    .majjer-testimonial-card:hover {
+      box-shadow: 0 24px 70px rgba(255, 122, 0, 0.38), 0 0 35px rgba(255, 122, 0, 0.45);
+      border-color: rgba(255, 122, 0, 0.55);
+      transform: translateY(-6px);
+    }
+
+    #majjer-testimonials::before,
+    #majjer-testimonials::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 120px;
+      height: 100%;
+      pointer-events: none;
+      background: linear-gradient(to right, #000000 0%, rgba(0,0,0,0) 100%);
+      z-index: 1;
+    }
+
+    #majjer-testimonials::after {
+      right: 0;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    #majjer-testimonials::before {
+      left: 0;
+    }
+
+    /* --- SNAPSHOT FEATURE SECTION --- */
+    #snapshot-feature {
+      width: 100%;
+      background: #000000;
+      padding: clamp(80px, 12vw, 120px) clamp(6vw, 10vw, 140px) clamp(90px, 10vw, 130px);
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .snapshot-inner {
+      width: min(1080px, 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(26px, 5vw, 48px);
+    }
+
+    .snapshot-heading,
+    .snapshot-footer {
+      font-family: "Sao Torpes", sans-serif;
+      font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+      font-weight: 700;
+      text-align: center;
+      color: #ffffff;
+      letter-spacing: -0.9px;
+    }
+
+    .snapshot-footer .snapshot-highlight {
+      color: #f97300;
+    }
+
+    .snapshot-carousel {
+      width: min(880px, 100%);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .snapshot-nav {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 1px solid rgba(249, 115, 0, 0.25);
+      background: rgba(12, 12, 16, 0.88);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #f97300;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .snapshot-nav svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .snapshot-track-container {
+      width: 100%;
+      --snapshot-slide-height: clamp(260px, 38vw, 360px);
+      height: var(--snapshot-slide-height);
+      overflow: hidden;
+      border-radius: 24px;
+      position: relative;
+      background: rgba(10, 10, 14, 0.85);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(18px);
+    }
+
+    .snapshot-track {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .snapshot-slide {
+      height: var(--snapshot-slide-height);
+      padding: clamp(22px, 3.2vw, 34px);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+      gap: clamp(18px, 4vw, 40px);
+      color: rgba(240, 240, 240, 0.92);
+    }
+
+    .snapshot-slide-media {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: rgba(12, 12, 16, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .snapshot-slide video {
+      width: 110%;
+      height: 110%;
+      object-fit: cover;
+      background: transparent;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .snapshot-placeholder {
+      border: 1px dashed rgba(249, 115, 0, 0.3);
+      color: rgba(249, 115, 0, 0.6);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .snapshot-slide-content {
+      max-width: 520px;
+      text-align: left;
+    }
+
+    .snapshot-slide--media-right .snapshot-slide-media {
+      order: 2;
+    }
+
+    .snapshot-slide--media-right .snapshot-slide-content {
+      order: 1;
+      text-align: right;
+    }
+
+    .snapshot-slide--media-right .snapshot-slide-content p {
+      text-align: right;
+    }
+
+    .snapshot-slide--media-left .snapshot-slide-content p {
+      text-align: left;
+    }
+
+    .snapshot-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(249, 115, 0, 0.16);
+      color: #f97300;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .snapshot-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      grid-column: 1 / -1;
+    }
+
+    .snapshot-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(249, 115, 0, 0.45);
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .snapshot-dot.active {
+      background: #f97300;
+      border-color: #f97300;
+      transform: scale(1.1);
+    }
+
+    .snapshot-subtitle {
+      font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+      line-height: 1.7;
+      color: rgba(240, 240, 240, 0.72);
+      text-align: center;
+      max-width: 640px;
+    }
+
+    @media (max-width: 1024px) {
+      .snapshot-inner {
+        gap: clamp(28px, 6vw, 50px);
+      }
+
+      .snapshot-carousel {
+        width: min(680px, 100%);
+        grid-template-columns: auto 1fr auto;
+      }
+    }
+
+    @media (max-width: 680px) {
+      #snapshot-feature {
+        padding: 70px 22px 80px;
+      }
+
+      .snapshot-heading,
+      .snapshot-footer {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+      }
+
+      .snapshot-track-container {
+        --snapshot-slide-height: clamp(320px, 82vw, 420px);
+        border-radius: 20px;
+      }
+
+      .snapshot-carousel {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .snapshot-slide {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .snapshot-slide-content {
+        text-align: center;
+      }
+
+      .snapshot-slide video,
+      .snapshot-slide-media {
+        border-radius: 18px;
+      }
+    }
+
+    /* --- PRICING SECTION --- */
+    #pricing {
+      width: 100%;
+      background: #000000;
+      padding: clamp(90px, 12vw, 140px) clamp(6vw, 10vw, 140px) clamp(100px, 12vw, 150px);
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .pricing-inner {
+      width: min(1200px, 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(28px, 5vw, 48px);
+    }
+
+    .pricing-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pricing-title {
+      font-family: "Sao Torpes", sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -1px;
+    }
+
+    .pricing-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: rgba(240, 240, 240, 0.7);
+    }
+
+    .pricing-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 12px rgba(249, 115, 0, 0.15);
+      gap: 6px;
+    }
+
+    .pricing-toggle button {
+      background: transparent;
+      border: none;
+      color: rgba(240, 240, 240, 0.7);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 10px 26px;
+      border-radius: 999px;
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .pricing-toggle button .toggle-badge {
+      background: rgba(249, 115, 0, 0.2);
+      color: #f97300;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .pricing-toggle button.active {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 10px 25px rgba(249, 115, 0, 0.25);
+    }
+
+    .pricing-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(22px, 4vw, 32px);
+    }
+
+    .pricing-card {
+      background: linear-gradient(145deg, rgba(18, 18, 22, 0.95), rgba(10, 10, 12, 0.9));
+      border-radius: 26px;
+      padding: clamp(26px, 4vw, 38px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 2.8vw, 28px);
+      position: relative;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 45px 110px rgba(249, 115, 0, 0.35);
+      border-color: rgba(249, 115, 0, 0.45);
+    }
+
+    .pricing-card.glow {
+      box-shadow: 0 45px 120px rgba(249, 115, 0, 0.32), 0 0 40px rgba(249, 115, 0, 0.15);
+      border-color: rgba(249, 115, 0, 0.28);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(249, 115, 0, 0.22);
+      color: #f97300;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .pricing-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pricing-plan-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .pricing-price {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .price-amount {
+      position: relative;
+      height: 58px;
+      overflow: hidden;
+    }
+
+    .price-value {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 700;
+      color: #ffffff;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .price-value.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .price-period {
+      font-size: 0.95rem;
+      color: rgba(240, 240, 240, 0.6);
+    }
+
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: rgba(240, 240, 240, 0.78);
+      font-size: 0.98rem;
+    }
+
+    .pricing-features li::before {
+      content: "\2713";
+      font-size: 0.9rem;
+      color: #f97300;
+      margin-top: 2px;
+    }
+
+    .pricing-cta {
+      margin-top: auto;
+    }
+
+    .pricing-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #000000;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 0 16px 40px rgba(255, 255, 255, 0.1);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .pricing-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 55px rgba(249, 115, 0, 0.35);
+    }
+
+    .pricing-button span {
+      font-size: 1.1rem;
+    }
+
+    .pricing-dots {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card {
+        padding: 26px;
+      }
+
+      .pricing-toggle {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* --- ONBOARDING STEPS SECTION --- */
+    #steps {
+      width: 100%;
+      background: #000000;
+      padding: clamp(90px, 12vw, 140px) clamp(6vw, 10vw, 140px) clamp(110px, 12vw, 160px);
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .steps-inner {
+      width: min(1180px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(32px, 6vw, 52px);
+      align-items: center;
+      text-align: center;
+    }
+
+    .steps-title {
+      font-family: "Sao Torpes", sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -1px;
+    }
+
+    .steps-subtitle {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: rgba(230, 230, 230, 0.65);
+      max-width: 640px;
+    }
+
+    .steps-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(24px, 4vw, 36px);
+    }
+
+    .step-card {
+      background: linear-gradient(160deg, rgba(18, 18, 22, 0.92), rgba(10, 10, 13, 0.95));
+      border-radius: 26px;
+      padding: clamp(22px, 3.2vw, 32px);
+      border: 1px solid rgba(249, 115, 0, 0.18);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.55);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: clamp(20px, 3.2vw, 30px);
+      row-gap: 0;
+      align-items: start;
+      text-align: left;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    .step-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(150deg, rgba(249, 115, 0, 0.95), rgba(255, 155, 60, 0.6));
+      box-shadow: 0 14px 34px rgba(249, 115, 0, 0.45);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: start;
+    }
+
+    .step-content {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1.8vw, 16px);
+      align-self: start;
+    }
+
+    @media (max-width: 680px) {
+      .step-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        align-items: center;
+        row-gap: 18px;
+      }
+
+      .step-badge {
+        margin: 0 auto;
+      }
+
+      .step-content {
+        align-items: center;
+      }
+
+      .step-text {
+        text-align: center;
+      }
+    }
+
+    .step-title {
+      font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .step-text {
+      font-size: clamp(0.98rem, 1.5vw, 1.05rem);
+      line-height: 1.6;
+      color: rgba(229, 229, 229, 0.8);
+    }
+
+    @media (max-width: 1024px) {
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        align-items: center;
+      }
+
+      .step-content {
+        align-items: center;
+      }
+
+      .step-text {
+        text-align: center;
+      }
+    }
+
+    /* --- IMPACT SECTION --- */
+    #impact {
+      width: 100%;
+      background: #000000;
+      padding: clamp(90px, 12vw, 150px) clamp(6vw, 11vw, 150px) clamp(110px, 12vw, 160px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .impact-inner {
+      width: min(1200px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(40px, 6vw, 64px);
+    }
+
+    .impact-title {
+      font-family: "Sao Torpes", sans-serif;
+      font-size: clamp(2.4rem, 4.6vw, 3.8rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -1px;
+    }
+
+    .impact-subtitle {
+      font-size: clamp(1.05rem, 1.9vw, 1.3rem);
+      color: rgba(230, 230, 230, 0.72);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .impact-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .impact-body {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: clamp(36px, 6vw, 60px);
+      align-items: center;
+      width: 100%;
+    }
+
+    .impact-copy {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(20px, 3vw, 32px);
+    }
+
+    .impact-visual {
+      position: relative;
+      border-radius: 28px;
+      background: radial-gradient(circle at top, rgba(249, 115, 0, 0.22), rgba(20, 20, 26, 0.95));
+      border: 1px solid rgba(249, 115, 0, 0.3);
+      box-shadow: 0 40px 120px rgba(249, 115, 0, 0.18), 0 20px 80px rgba(0, 0, 0, 0.6);
+      padding: clamp(28px, 4vw, 48px);
+      overflow: hidden;
+      animation: floatSlow 2.8s ease-in-out infinite alternate;
+      transition: transform 0.4s ease;
+    }
+
+    .impact-visual:hover {
+      transform: translateY(-6px);
+    }
+
+    .impact-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(249, 115, 0, 0.08));
+      pointer-events: none;
+    }
+
+    .impact-visual-mock {
+      position: relative;
+      border-radius: 20px;
+      background: rgba(12, 12, 16, 0.9);
+      border: 1px solid rgba(249, 115, 0, 0.35);
+      box-shadow: inset 0 0 30px rgba(249, 115, 0, 0.1);
+      height: clamp(260px, 35vw, 360px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(18px, 3vw, 28px);
+      color: rgba(240, 240, 240, 0.85);
+      text-align: center;
+      padding: clamp(24px, 4vw, 40px);
+    }
+
+    .impact-mock-title {
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 600;
+    }
+
+    .impact-mock-bars {
+      width: 100%;
+      display: grid;
+      gap: 14px;
+    }
+
+    .impact-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .impact-bar span {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(249, 115, 0, 0.85), rgba(255, 165, 90, 0.6));
+      transform-origin: left;
+    }
+
+    .impact-mock-legend {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: rgba(230, 230, 230, 0.65);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(16px, 3vw, 26px);
+    }
+
+    .metric-card {
+      background: linear-gradient(160deg, rgba(18, 18, 22, 0.95), rgba(10, 10, 12, 0.92));
+      border-radius: 22px;
+      padding: clamp(22px, 3vw, 28px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(249, 115, 0, 0.28);
+      box-shadow: 0 35px 100px rgba(249, 115, 0, 0.25);
+    }
+
+    .metric-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(249, 115, 0, 0.18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #f97300;
+    }
+
+    .metric-value {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .metric-label {
+      font-size: 0.95rem;
+      color: rgba(229, 229, 229, 0.7);
+    }
+
+    .impact-benefits {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(16px, 3vw, 24px);
+      margin-top: clamp(24px, 4vw, 32px);
+    }
+
+    .benefit {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .benefit h4 {
+      font-size: 1.05rem;
+      color: #f97300;
+      font-weight: 600;
+    }
+
+    .benefit p {
+      font-size: 0.95rem;
+      color: rgba(229, 229, 229, 0.72);
+      line-height: 1.6;
+    }
+
+    @keyframes floatSlow {
+      0% { transform: translateY(-4px); }
+      100% { transform: translateY(6px); }
+    }
+
+    @media (max-width: 1024px) {
+      .impact-body {
+        grid-template-columns: 1fr;
+      }
+
+      .impact-subtitle {
+        text-align: center;
+      }
+
+      .impact-benefits {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .benefit {
+        align-items: center;
+      }
+
+      .impact-copy {
+        align-items: center;
+        text-align: center;
+      }
+
+      .metrics-grid {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .impact-visual-mock {
+        height: clamp(220px, 70vw, 280px);
+      }
+    }
+
+    /* --- TEAM SECTION --- */
+    #team {
+      width: 100%;
+      background: #000000;
+      padding: clamp(90px, 12vw, 150px) clamp(6vw, 10vw, 150px);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+    }
+
+    .team-inner {
+      width: min(1180px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(42px, 6vw, 70px);
+    }
+
+    .team-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .team-title {
+      font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .team-subtitle {
+      font-size: clamp(1.05rem, 1.9vw, 1.25rem);
+      color: rgba(228, 231, 239, 0.78);
+      max-width: 720px;
+      line-height: 1.7;
+    }
+
+    .team-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      color: #f97300;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .team-link:hover {
+      color: #ff8a26;
+      transform: translateY(-2px);
+    }
+
+    .team-flow {
+      position: relative;
+      padding: clamp(30px, 6vw, 60px) 0;
+    }
+
+    .team-flow::before {
+      content: "";
+      display: none;
+    }
+
+    .team-path-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .team-path {
+      fill: none;
+      stroke: #f97300;
+      stroke-width: 3;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 12px rgba(249, 115, 0, 0.35));
+    }
+
+    .team-cards {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(36px, 5vw, 64px);
+    }
+
+    .team-card {
+      --card-image: none;
+      background-color: #101016;
+      background-image: var(--card-image);
+      background-size: cover;
+      background-position: center;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      min-height: 360px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      max-width: min(360px, 90vw);
+    }
+
+    .team-card.highlight {
+      border-color: rgba(249, 115, 0, 0.35);
+      box-shadow: 0 40px 110px rgba(249, 115, 0, 0.28);
+    }
+
+    .team-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(249, 115, 0, 0.4);
+      box-shadow: 0 45px 120px rgba(249, 115, 0, 0.3);
+    }
+
+    .team-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: clamp(20px, 5vw, 28px);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .team-card:hover .team-card-overlay {
+      opacity: 1;
+    }
+
+    .team-overlay-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .team-overlay-content h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .team-overlay-content span {
+      font-size: 0.95rem;
+      color: rgba(240, 240, 240, 0.8);
+    }
+
+    .team-overlay-content p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(235, 235, 235, 0.82);
+      max-width: 90%;
+    }
+
+    .team-card-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .team-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+
+    .team-btn.linkedin {
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      color: #ffffff;
+      background: transparent;
+    }
+
+    .team-btn.linkedin:hover {
+      background: #ffffff;
+      color: #000000;
+      transform: translateY(-2px);
+    }
+
+    .team-card-footer {
+      background: rgba(8, 8, 10, 0.82);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .team-card-footer .role {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(249, 249, 249, 0.65);
+    }
+
+    .team-card-footer .name {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .team-badge {
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(249, 115, 0, 0.22);
+      color: #f97300;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .team-badge:hover {
+      background: rgba(249, 115, 0, 0.32);
+    }
+
+    .team-card.left {
+      margin-right: auto;
+    }
+
+    .team-card.right {
+      margin-left: auto;
+    }
+
+    .team-card.center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (max-width: 1080px) {
+      .team-card {
+        max-width: min(340px, 92vw);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .team-path-svg {
+        opacity: 0.4;
+      }
+
+      .team-card {
+        max-width: min(320px, 92vw);
+      }
+    }
+
+    @media (max-width: 720px) {
+      #team {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .team-inner {
+        gap: 40px;
+      }
+
+      .team-cards {
+        gap: 32px;
+        align-items: center;
+      }
+
+      .team-card,
+      .team-card.left,
+      .team-card.right,
+      .team-card.center {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .team-card {
+        min-height: 320px;
+      }
+
+      .team-path-svg {
+        display: none;
+      }
+
+      .team-flow::before {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        transform: translateX(-50%);
+        background: linear-gradient(180deg, rgba(249, 115, 0, 0), rgba(249, 115, 0, 0.7), rgba(249, 115, 0, 0));
+        filter: blur(0.4px);
+        pointer-events: none;
+      }
+    }
+
+    .team-card.is-active {
+      border-color: rgba(249, 115, 0, 0.45);
+      box-shadow: 0 50px 140px rgba(249, 115, 0, 0.32);
+      transform: translateY(-4px);
+    }
+
+    .team-card.is-active .team-card-footer {
+      background: rgba(16, 16, 22, 0.92);
+    }
+
+    .feature-card--syllabus {
+      padding: 48px;
+      text-align: left;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: 18px;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1rem;
+    }
+
+    .feature-card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .feature-card-description {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.78);
+      margin: 0;
+    }
+
+    .feature-card-subheading {
+      font-size: 0.85rem;
+      letter-spacing: 0.4px;
+      color: rgba(255, 122, 0, 0.75);
+      margin-top: 6px;
+    }
+
+    /* --- FOOTER --- */
+    .site-footer {
+      background: #000000;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 32px 6vw 36px;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .site-footer .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 48px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-logo img {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-logo:hover {
+      transform: translateY(-2px);
+    }
+
+    .footer-copy {
+      margin: 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.9rem;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus {
+      color: #f97300;
+    }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-social-link {
+      color: rgba(255, 255, 255, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      transition: color 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+    }
+
+    .footer-social-link svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .footer-social-link:hover,
+    .footer-social-link:focus {
+      color: #ffffff;
+      transform: translateY(-2px);
+      filter: drop-shadow(0 0 10px rgba(249, 115, 0, 0.4));
+    }
+
+    .footer-social-link.twitter svg {
+      stroke-width: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .site-footer {
+        padding: 28px 5vw 32px;
+      }
+
+      .site-footer .footer-content {
+        gap: 32px;
+      }
+
+      .footer-right {
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .site-footer .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+      }
+
+      .footer-left {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .footer-right {
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .footer-social {
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- EFFET DE LUMIÈRE CURSEUR -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- INTRO ANIMATION -->
+  <div class="intro">
+    <h1 class="M">M</h1>
+    <h1 class="A">A</h1>
+    <h1 class="J">J</h1>
+    <h1 class="J" id="J2">J</h1>
+    <h1 class="E">E</h1>
+    <h1 class="R">R</h1>
+  </div>
+
+  <!-- NAVBAR BULLE FLOTTANTE -->
+  <nav class="navbar-bubble" id="majjerNav">
+    <a class="navbar-brand" href="#home">
+      <img src="images/majjerlogo.png" alt="MAJJER Logo" />
+    </a>
+    <div class="d-flex align-items-center">
+      <div class="nav-item"><a href="#home" class="nav-link active">Home</a></div>
+      <div class="nav-item"><a href="#features" class="nav-link">Features</a></div>
+      <div class="nav-item"><a href="#pricing" class="nav-link">Pricing</a></div>
+      <div class="nav-item"><a href="#team-vision" class="nav-link">About</a></div>
+    </div>
+    <a class="btn-orange" href="#steps">Get Started</a>
+  </nav>
+
+  <main id="home">
+    <p class="meet-majjer swipe-text swipe-white reveal">meet Majjer</p>
+    <h2 class="main-title swipe-text swipe-white">Your all in one personal assistant</h2>
+    <section id="majjer-testimonials" class="reveal">
+      <div class="majjer-testimonials-track">
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"This is exactly what students needed. I'm all in."</p>
+          <div class="majjer-testimonial-author">
+            <span>Sarah</span>
+            <span>2nd year, Health Sciences</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"If this works, it's going to save me hours every week."</p>
+          <div class="majjer-testimonial-author">
+            <span>Alex</span>
+            <span>1st year, Computer Science</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"Finally, something built for us, not just profs or admin."</p>
+          <div class="majjer-testimonial-author">
+            <span>Maya</span>
+            <span>3rd year, Psychology</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"MAJJER keeps me organized without stressing me out."</p>
+          <div class="majjer-testimonial-author">
+            <span>Chris</span>
+            <span>2nd year, Business Technology</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"It feels like having an assistant for university life."</p>
+          <div class="majjer-testimonial-author">
+            <span>Leila</span>
+            <span>1st year, Engineering</span>
+          </div>
+        </article>
+        <!-- Duplicate for seamless loop -->
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"This is exactly what students needed. I'm all in."</p>
+          <div class="majjer-testimonial-author">
+            <span>Sarah</span>
+            <span>2nd year, Health Sciences</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"If this works, it's going to save me hours every week."</p>
+          <div class="majjer-testimonial-author">
+            <span>Alex</span>
+            <span>1st year, Computer Science</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"Finally, something built for us, not just profs or admin."</p>
+          <div class="majjer-testimonial-author">
+            <span>Maya</span>
+            <span>3rd year, Psychology</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"MAJJER keeps me organized without stressing me out."</p>
+          <div class="majjer-testimonial-author">
+            <span>Chris</span>
+            <span>2nd year, Business Technology</span>
+          </div>
+        </article>
+        <article class="majjer-testimonial-card">
+          <p class="majjer-testimonial-quote">"It feels like having an assistant for university life."</p>
+          <div class="majjer-testimonial-author">
+            <span>Leila</span>
+            <span>1st year, Engineering</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="phone-container" id="img1">
+      <div class="text-bubble left" data-scroll="0.1">
+        <span class="text-bubble-title">Your Student Life, Simplified</span>
+        <span class="text-bubble-body">MAJJER organizes your week, your deadlines, and your campus, all in one clean place.</span>
+      </div>
+      <div class="text-bubble right" data-scroll="0.2">
+        <span class="text-bubble-title">From Overwhelm to Control</span>
+        <span class="text-bubble-body">MAJJER brings clarity to your schedule so you can focus on learning, not catching up.</span>
+      </div>
+      <div class="text-bubble left" data-scroll="0.4">
+        <span class="text-bubble-title">Your Personal Campus Brain</span>
+        <span class="text-bubble-body">Classes, tasks, routes &mdash; MAJJER thinks for you.</span>
+      </div>
+      <div class="text-bubble right" data-scroll="0.6">
+        <span class="text-bubble-title">Precision in Every Plan</span>
+        <span class="text-bubble-body">Smarter scheduling, fewer surprises, more results.</span>
+      </div>
+      <img src="images/iphonemajjer.png" alt="MAJJER App Preview" class="phone"/>
+    </section>
+
+    <section id="student-built" class="reveal">
+      <div class="student-built-inner">
+        <div class="student-built-intro">
+          <span class="student-built-badge reveal reveal-delay-1">STUDENT-FIRST</span>
+          <h2 class="student-built-title reveal reveal-delay-2">
+            Built <span class="student-built-typewriter" data-first="by students" data-second="for students">
+              <span class="typewriter-text">by students</span>
+              <span class="typewriter-cursor"></span>
+            </span>
+          </h2>
+          <p class="student-built-description reveal reveal-delay-3">
+            We know how overwhelming university can get.<br />
+            That's why we built MAJJER: an all-in-one campus assistant designed to save you time, reduce stress, and help you stay on top of your academic life.
+          </p>
+        </div>
+        <div class="student-built-features reveal reveal-delay-4">
+          <div class="student-feature-card">
+            <span class="student-feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6"></circle>
+                <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+              </svg>
+            </span>
+            <span class="student-feature-title">Smart Schedule</span>
+            <p class="student-feature-text">MAJJER builds your week automatically.<br />Classes, deadlines, exams — all synced.</p>
+          </div>
+          <div class="student-feature-card">
+            <span class="student-feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="8.5" cy="8.5" r="3.5"></circle>
+                <circle cx="17" cy="7" r="2.5"></circle>
+                <path d="M4 20c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5"></path>
+                <path d="M13.5 17.5c.7-.7 1.7-1.1 2.8-1.1 2 0 3.7 1.5 3.7 3.6"></path>
+              </svg>
+            </span>
+            <span class="student-feature-title">Deadline Radar</span>
+            <p class="student-feature-text">Never miss an exam or assignment again.<br />MAJJER keeps track for you.</p>
+          </div>
+          <div class="student-feature-card">
+            <span class="student-feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 6.75A3.75 3.75 0 0 1 12.75 3h1.5A3.75 3.75 0 0 1 18 6.75v10.5A3.75 3.75 0 0 1 14.25 21h-1.5A3.75 3.75 0 0 1 9 17.25v-1.5"></path>
+                <path d="M9 8.25H7.75A3.75 3.75 0 0 0 4 12v1.5A3.75 3.75 0 0 0 7.75 17.25H9"></path>
+                <path d="M10.5 12h3"></path>
+              </svg>
+            </span>
+            <span class="student-feature-title">Connect Your Campus</span>
+            <p class="student-feature-text">Link uoZone, Brightspace, Discord &amp; more.<br />MAJJER syncs events automatically for faster tracking.</p>
+          </div>
+          <div class="student-feature-card">
+            <span class="student-feature-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3l7 4v5.5c0 4.2-3 8.2-7 9-4-0.8-7-4.8-7-9V7l7-4z"></path>
+                <path d="M9.5 12.5l2 2 3.5-3.5"></path>
+              </svg>
+            </span>
+            <span class="student-feature-title">Privacy First</span>
+            <p class="student-feature-text">Your data stays yours.<br />MAJJER never sells or shares it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SECTION FEATURES -->
+  <section id="features">
+    <div class="features-content reveal">
+      <div class="features-labels">
+        <h2 class="features-label features-label-left swipe-text swipe-white reveal reveal-delay-1">Schedule</h2>
+        <h2 class="features-label features-label-right swipe-text swipe-orange reveal reveal-delay-1">Simplified</h2>
+      </div>
+      
+      <div class="features-cards-container reveal reveal-delay-2">
+        <div class="feature-card feature-card--syllabus reveal reveal-delay-3">
+          <h3 class="feature-card-title">From syllabus to a clean calendar and smart reminders</h3>
+          <p class="feature-card-description">MAJJER reads your syllabus, extracts every important date, and restructures it into a clean, organized schedule. No manual entry, no missed deadlines, everything becomes clear, synced, and ready to follow.</p>
+        </div>
+        <div class="feature-card feature-card--image reveal reveal-delay-4">
+          <img src="images/notification.png" alt="MAJJER smart notification preview" style="transform: translateY(-60px);" />
+        </div>
+        <div class="feature-card feature-card--syllabus reveal reveal-delay-5">
+          <h3 class="feature-card-title">Smart auto-scheduling that adapts to your real priorities</h3>
+          <p class="feature-card-description">MAJJER automatically plans your study sessions, gym time, and personal routines — then reshapes your schedule based on what actually matters. Midterms, quizzes, project deadlines… everything is weighted by importance, difficulty, and your level of comfort in each course.</p>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="feature-map">
+    <div class="feature-map-container">
+      <div class="feature-map-top">
+        <div class="feature-map-header reveal reveal-delay-1">
+          <h2 class="feature-map-title"><span class="accent">Deadlines</span> Destinations</h2>
+          <p class="feature-map-subtitle">Never get caught off guard by deadlines or room changes. MAJJER draws a clear path across every key moment in your day.</p>
+        </div>
+        <div class="feature-map-visual-block reveal reveal-delay-2">
+          <div class="feature-map-frame">
+            <img src="images/map1.png" alt="MAJJER Campus Mini-Map" />
+          </div>
+          <p class="feature-map-subcopy reveal reveal-delay-3">Quickly visualize your campus routes with a stylized MAJJER mini map.</p>
+          <div class="feature-map-cta reveal reveal-delay-4">
+            <a href="#" class="feature-map-button">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="snapshot-feature">
+    <div class="snapshot-inner reveal">
+      <h2 class="snapshot-heading reveal reveal-delay-1">Events covered</h2>
+      <div class="snapshot-carousel reveal reveal-delay-2">
+        <button class="snapshot-nav snapshot-nav-prev" type="button" aria-label="Previous snapshot slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="14 7 9 12 14 17"></polyline>
+          </svg>
+        </button>
+        <div class="snapshot-track-container">
+          <div class="snapshot-track">
+            <article class="snapshot-slide snapshot-slide--media-left">
+              <div class="snapshot-slide-media">
+                <video src="snapshot.mp4" autoplay muted loop playsinline preload="auto"></video>
+              </div>
+              <div class="snapshot-slide-content">
+                <div class="snapshot-badge">Live demo</div>
+                <h3>Watch MAJJER capture events in real-time</h3>
+                <p>Snap any timetable, flyer, or notice board. MAJJER AI reads it instantly and creates a polished calendar entry for you.</p>
+              </div>
+            </article>
+            <article class="snapshot-slide snapshot-slide--media-right">
+              <div class="snapshot-slide-content">
+                <div class="snapshot-badge">Auto-capture</div>
+                <h3>Instantly turns photos into events</h3>
+                <p>Upload class schedules, flyers, or handwritten notes. MAJJER AI reads and creates calendar items right away.</p>
+              </div>
+              <div class="snapshot-slide-media">
+                <img src="images/events.jpg" alt="Auto-capture feature" style="width: 100%; height: 100%; object-fit: contain; border-radius: 20px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);" />
+              </div>
+            </article>
+            <article class="snapshot-slide snapshot-slide--media-left">
+              <div class="snapshot-slide-media">
+                <img src="images/location.jpg" alt="Context aware feature" style="width: 100%; height: 100%; object-fit: contain; border-radius: 20px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);" />
+              </div>
+              <div class="snapshot-slide-content">
+                <div class="snapshot-badge">Context aware</div>
+                <h3>Understands times, rooms, and contacts</h3>
+                <p>Smart parsing detects dates, locations, and people automatically so you never miss where you need to be.</p>
+              </div>
+            </article>
+            <article class="snapshot-slide snapshot-slide--media-right">
+              <div class="snapshot-slide-content">
+                <div class="snapshot-badge">Shared instantly</div>
+                <h3>Syncs with every connected account</h3>
+                <p>Events propagate to your synced calendars and study groups, keeping everyone aligned in real time.</p>
+              </div>
+              <div class="snapshot-slide-media">
+                <img src="images/accounts.png" alt="Sync feature" style="width: 100%; height: 100%; object-fit: contain; border-radius: 20px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);" />
+              </div>
+            </article>
+          </div>
+        </div>
+        <button class="snapshot-nav snapshot-nav-next" type="button" aria-label="Next snapshot slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="10 7 15 12 10 17"></polyline>
+          </svg>
+        </button>
+        <div class="snapshot-dots">
+          <button class="snapshot-dot" type="button" aria-label="Go to slide 1"></button>
+          <button class="snapshot-dot" type="button" aria-label="Go to slide 2"></button>
+          <button class="snapshot-dot" type="button" aria-label="Go to slide 3"></button>
+          <button class="snapshot-dot" type="button" aria-label="Go to slide 4"></button>
+        </div>
+      </div>
+      <h2 class="snapshot-footer reveal reveal-delay-3">in <span class="snapshot-highlight">a snapshot</span></h2>
+      <p class="snapshot-subtitle reveal reveal-delay-4">Take a picture. MAJJER AI instantly picks it up and turns it into an event. Smooth. Automatic. Hands-free.</p>
+    </div>
+  </section>
+
+  <section id="impact" class="reveal">
+    <div class="impact-inner">
+      <div class="impact-header reveal reveal-delay-1">
+        <h2 class="impact-title">Real Impact on Your Day-to-Day Life</h2>
+        <p class="impact-subtitle">MAJJER AI doesn't just organize your schedule, it transforms how you manage time.</p>
+      </div>
+
+      <div class="impact-body">
+        <div class="impact-visual reveal reveal-delay-1">
+          <div class="impact-visual-mock">
+            <div class="impact-mock-title">Daily Flow Overview</div>
+            <div class="impact-mock-bars">
+              <div class="impact-bar"><span style="transform: scaleX(0.82);"></span></div>
+              <div class="impact-bar"><span style="transform: scaleX(0.64);"></span></div>
+              <div class="impact-bar"><span style="transform: scaleX(0.94);"></span></div>
+              <div class="impact-bar"><span style="transform: scaleX(0.76);"></span></div>
+            </div>
+            <div class="impact-mock-legend">
+              <span>Sync status</span>
+              <span>AI adjustments</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="impact-copy">
+          <div class="metrics-grid reveal reveal-delay-2">
+            <article class="metric-card">
+              <span class="metric-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+              </span>
+              <span class="metric-value" data-target="5" data-prefix="+" data-suffix=" hrs">+0 hrs</span>
+              <span class="metric-label">Saved per week on average</span>
+            </article>
+            <article class="metric-card">
+              <span class="metric-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </span>
+              <span class="metric-value" data-target="100" data-suffix="%">0%</span>
+              <span class="metric-label">On-time task completion</span>
+            </article>
+            <article class="metric-card">
+              <span class="metric-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </span>
+              <span class="metric-value" data-target="10" data-suffix="k+">0k+</span>
+              <span class="metric-label">Active users worldwide</span>
+            </article>
+            <article class="metric-card">
+              <span class="metric-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </span>
+              <span class="metric-value" data-target="4.8" data-suffix=" / 5" data-decimals="1">0 / 5</span>
+              <span class="metric-label">Average user rating</span>
+            </article>
+          </div>
+
+          <div class="impact-benefits reveal reveal-delay-3">
+            <div class="benefit">
+              <h4>Never Miss a Deadline</h4>
+              <p>AI-powered reminders and adaptive scheduling keep you ahead.</p>
+            </div>
+            <div class="benefit">
+              <h4>Reduce Stress &amp; Anxiety</h4>
+              <p>Let MAJJER offload the mental load of planning.</p>
+            </div>
+            <div class="benefit">
+              <h4>Better Work–Life Balance</h4>
+              <p>Make more time for what truly matters.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="reveal">
+    <div class="pricing-inner">
+      <div class="pricing-header reveal reveal-delay-1">
+        <h2 class="pricing-title">Choose the Plan That Fits You</h2>
+        <p class="pricing-subtitle">Powerful tools to automate your day. Simple, fast, seamless.</p>
+      </div>
+
+      <div class="pricing-toggle reveal reveal-delay-2">
+        <button class="pricing-toggle-btn active" data-plan="monthly">Monthly</button>
+        <button class="pricing-toggle-btn" data-plan="annual">Annual <span class="toggle-badge">Save 37%</span></button>
+      </div>
+
+      <div class="pricing-grid reveal reveal-delay-3">
+        <article class="pricing-card">
+          <div class="pricing-card-header">
+            <span class="pricing-plan-name">Starter</span>
+            <div class="pricing-price" data-period-monthly="per month" data-period-annual="per year">
+              <div class="price-amount">
+                <span class="price-value price-monthly active">$0</span>
+                <span class="price-value price-annual">$0</span>
+              </div>
+              <span class="price-period">per month</span>
+            </div>
+          </div>
+          <ul class="pricing-features">
+            <li>20 smart captures per month</li>
+            <li>Basic event extraction</li>
+            <li>Simple calendar sync</li>
+            <li>Standard notifications</li>
+          </ul>
+          <div class="pricing-cta">
+            <a href="#" class="pricing-button">Download <span>&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="pricing-card glow">
+          <span class="pricing-badge">Most Popular</span>
+          <div class="pricing-card-header">
+            <span class="pricing-plan-name">Plus</span>
+            <div class="pricing-price" data-period-monthly="per month" data-period-annual="per year">
+              <div class="price-amount">
+                <span class="price-value price-monthly active">$4.99</span>
+                <span class="price-value price-annual">$37.99</span>
+              </div>
+              <span class="price-period">per month</span>
+            </div>
+          </div>
+          <ul class="pricing-features">
+            <li>200 smart captures</li>
+            <li>Instant event creation</li>
+            <li>Smart reminders</li>
+            <li>Priority recognition speed</li>
+            <li>Unlock all automation features</li>
+          </ul>
+          <div class="pricing-cta">
+            <a href="#" class="pricing-button">Download <span>&rarr;</span></a>
+          </div>
+        </article>
+
+        <article class="pricing-card glow">
+          <span class="pricing-badge">Best Value</span>
+          <div class="pricing-card-header">
+            <span class="pricing-plan-name">Pro</span>
+            <div class="pricing-price" data-period-monthly="per month" data-period-annual="per year">
+              <div class="price-amount">
+                <span class="price-value price-monthly active">$9.99</span>
+                <span class="price-value price-annual">$79.99</span>
+              </div>
+              <span class="price-period">per month</span>
+            </div>
+          </div>
+          <ul class="pricing-features">
+            <li>Unlimited smart captures</li>
+            <li>Advanced event parsing</li>
+            <li>Multi-calendar sync</li>
+            <li>Early access to new features</li>
+            <li>AI templates for productivity</li>
+            <li>Premium support</li>
+          </ul>
+          <div class="pricing-cta">
+            <a href="#" class="pricing-button">Download <span>&rarr;</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="steps" class="reveal">
+    <div class="steps-inner">
+      <h2 class="steps-title reveal reveal-delay-1">Get Started with MAJJER in 3 Smart Steps</h2>
+      <p class="steps-subtitle reveal reveal-delay-2">From chaos to clarity, in just a few minutes.</p>
+
+      <div class="steps-grid reveal reveal-delay-3">
+        <article class="step-card reveal">
+          <span class="step-badge">1</span>
+          <div class="step-content">
+            <h3 class="step-title">Download &amp; Sync</h3>
+            <p class="step-text">Download <span style="color:#f97300;">MAJJER</span> from the App Store or Google Play.<br />Sign in with your student or work account, setup takes less than <span style="color:#f97300;">30 seconds</span>.</p>
+          </div>
+        </article>
+        <article class="step-card reveal">
+          <span class="step-badge">2</span>
+          <div class="step-content">
+            <h3 class="step-title">Connect Everything</h3>
+            <p class="step-text"><span style="color:#f97300;">MAJJER</span> links your calendars, alarms, and maps.<br />Your schedule syncs automatically with <span style="color:#f97300;">class times, deadlines, and routes</span>.</p>
+          </div>
+        </article>
+        <article class="step-card reveal">
+          <span class="step-badge">3</span>
+          <div class="step-content">
+            <h3 class="step-title">Let AI Handle the Rest</h3>
+            <p class="step-text">Your alarms adapt. Your day reorganizes itself.<br />Your time finally <span style="color:#f97300;">makes sense</span>.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="team-inner">
+      <div class="team-header">
+        <h2 class="team-title" id="team-vision">The Vision Behind MAJJER</h2>
+        <p class="team-subtitle">MAJJER was designed to bring balance back to modern life.</p>
+        <a class="team-link" href="#team">Meet the Team &rarr;</a>
+      </div>
+
+      <div class="team-flow">
+        <svg class="team-path-svg" viewBox="0 0 1200 1400" preserveAspectRatio="none">
+          <path class="team-path" d="M 260 180 Q 260 280, 600 350 Q 940 420, 940 520 Q 940 620, 600 690 Q 260 760, 260 860 Q 260 960, 600 1030 Q 940 1100, 940 1200 Q 940 1280, 600 1320" />
+        </svg>
+
+        <div class="team-cards">
+          <article class="team-card left highlight" style="--card-image: url('images/rayann.png');" data-path-progress="0.18">
+            <div class="team-card-overlay">
+              <div class="team-overlay-content">
+                <h3>Rayann Sagnon</h3>
+                <span>Genius Software Engineer · MAJJER AI</span>
+    
+                <div class="team-card-actions">
+                  <a class="team-btn linkedin" href="https://www.linkedin.com/in/rayannsagnonsowftwareengineer" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card-footer">
+              <div>
+                <span class="role">Co-Founder</span>
+                <span class="name">Rayann Sagnon</span>
+              </div>
+              <a class="team-badge" href="https://www.linkedin.com/in/rayannsagnonsowftwareengineer" target="_blank" rel="noopener">LINKEDIN</a>
+            </div>
+          </article>
+
+          <article class="team-card right reveal reveal-delay-2" data-path-progress="0.24">
+            <img src="images/jean.jpg" alt="Jean Kouao" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;" />
+            <div class="team-card-overlay">
+              <div class="team-overlay-content">
+                <h3>Jean Kouao</h3>
+                <span>Head of Designs</span>
+                <p>Master of Majjer's Look</p>
+                
+                <div class="team-card-actions">
+                  <a class="team-btn linkedin" href="http://www.linkedin.com/in/jean-emmanuel-kouao-8a31b2388" target="_blank" rel="noopener">LINKEDIN</a>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="team-card-footer">
+              <div>
+                <span class="role">Co-Founder</span>
+                <span class="name">Jean Kouao</span>
+              </div>
+              <a class="team-badge" href="http://www.linkedin.com/in/jean-emmanuel-kouao-8a31b2388" target="_blank" rel="noopener">LINKEDIN</a>
+            </div>
+          </article>
+
+          <article class="team-card left" style="--card-image: url('images/team2.png');" data-path-progress="0.56">
+            <img src="images/emmanuel.jpeg" alt="Emmanuel Doghor" />
+            <div class="team-card-overlay">
+              <div class="team-overlay-content">
+                <h3>Emmanuel Doghor</h3>
+                <span>Data Lead</span>
+               
+                <div class="team-card-actions">
+                  <a class="team-btn linkedin" href="http://www.linkedin.com/in/emmanuel-doghor-969644344" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card-footer">
+              <div>
+                <span class="role">Co-Founder</span>
+                <span class="name">Emmanuel Doghor</span>
+              </div>
+              <a class="team-badge" href="#" target="_blank" rel="noopener">LINKEDIN</a>
+            </div>
+          </article>
+
+          <article class="team-card right" style="--card-image: url('images/team3.png'); margin-right: clamp(32px, 4vw, 80px);" data-path-progress="0.78">
+            <img src="images/team3.png" alt="Matthias Braun" />
+            <div class="team-card-overlay">
+              <div class="team-overlay-content">
+                <h3>Matthias Braun</h3>
+                <span>Product Lead</span>
+                <div class="team-card-actions">
+                  <a class="team-btn linkedin" href="#" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card-footer">
+              <div>
+                <span class="role">Co-Founder</span>
+                <span class="name">Matthias Braun</span>
+              </div>
+              <a class="team-badge" href="#" target="_blank" rel="noopener">LINKEDIN</a>
+            </div>
+          </article>
+
+          <article class="team-card center" style="--card-image: url('images/team4.png');" data-path-progress="1">
+            <img src="images/aswesh.jpg" alt="Aswesh Sritharakumar" />
+            <div class="team-card-overlay">
+              <div class="team-overlay-content">
+                <h3>Aswesh Sritharakumar</h3>
+                <span>Teachnical Lead</span>
+                
+                <div class="team-card-actions">
+                  <a class="team-btn linkedin" href="https://www.linkedin.com/in/aswesh-sritharakumar-940432382?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+              </div>
+            </div>
+            <div class="team-card-footer">
+              <div>
+                <span class="role">Co-Founder</span>
+                <span class="name">Aswesh Sritharakumar</span>
+              </div>
+              <a class="team-badge" href="#" target="_blank" rel="noopener">LINKEDIN</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#home" class="footer-logo">
+          <img src="images/majjerlogo.png" alt="MAJJER logo" />
+        </a>
+        <p class="footer-copy">© 2025 MAJJER Inc. All rights reserved.</p>
+      </div>
+
+      <div class="footer-right">
+        <nav class="footer-links" aria-label="Footer">
+          <a href="#terms">Terms &amp; Conditions</a>
+          <a href="#privacy">Privacy Policy</a>
+        </nav>
+        <div class="footer-social">
+          <a class="footer-social-link instagram" href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="MAJJER on Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="2.75" y="2.75" width="18.5" height="18.5" rx="5"></rect>
+              <circle cx="12" cy="12" r="5"></circle>
+              <circle cx="17.2" cy="6.8" r="1.3"></circle>
+            </svg>
+          </a>
+          <a class="footer-social-link facebook" href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="MAJJER on Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 3h-3a4 4 0 0 0-4 4v3H6v4h2v7h4v-7h3.1l.7-4H12V7a1 1 0 0 1 1-1h2V3z"></path>
+            </svg>
+          </a>
+          <a class="footer-social-link twitter" href="https://www.twitter.com" target="_blank" rel="noopener" aria-label="MAJJER on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h4.6l4.4 6 5-6H21L13.9 12.4 21 21h-4.6l-4.7-6.4L6.2 21H3l7.7-8.9L3 3z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Revenir en haut de la page au chargement/actualisation
+    // S'assurer que la page commence en haut dès le début
+    if (history.scrollRestoration) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    // Forcer le scroll en haut immédiatement
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    
+    // Au chargement complet de la page
+    window.addEventListener('load', () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    
+    // Au DOMContentLoaded (avant le chargement complet)
+    document.addEventListener('DOMContentLoaded', () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+    
+    // Lors du rafraîchissement (F5 ou Ctrl+R)
+    window.addEventListener('beforeunload', () => {
+      window.scrollTo(0, 0);
+    });
+    
+    const intro = document.querySelector(".intro");
+    const nav = document.getElementById("majjerNav");
+    const main = document.querySelector("main");
+    const phoneImg = document.querySelector(".phone");
+
+    let isIntroComplete = false;
+    let lastScrollY = window.pageYOffset || 0;
+    let navHideTimeout = null;
+    let navIsHidden = false;
+    const NAV_HIDE_DELAY = 140;
+    const SCROLL_THRESHOLD = 2;
+
+    function showNavbar() {
+      if (!nav) return;
+      if (navHideTimeout) {
+        clearTimeout(navHideTimeout);
+        navHideTimeout = null;
+      }
+      if (navIsHidden || !nav.classList.contains('nav-visible')) {
+        nav.classList.add('nav-visible');
+        nav.classList.remove('nav-hidden');
+        navIsHidden = false;
+      }
+    }
+
+    function hideNavbar() {
+      if (!nav || navIsHidden) return;
+      nav.classList.add('nav-hidden');
+      nav.classList.remove('nav-visible');
+      navIsHidden = true;
+    }
+
+    function scheduleHideNavbar() {
+      if (navHideTimeout) return;
+      navHideTimeout = setTimeout(() => {
+        hideNavbar();
+        navHideTimeout = null;
+      }, NAV_HIDE_DELAY);
+    }
+
+    setTimeout(() => {
+       intro.classList.add("hidden");
+       nav.classList.add("visible");
+       main.classList.add("visible");
+       document.body.style.backgroundColor = "#000000";
+ 
+       // ✅ Lance la rotation une seule fois, puis s'arrête
+       phoneImg.style.animation = "RotatingPhone 2s ease-out forwards";
+        
+       // ✅ Afficher "meet Majjer" avec le titre principal
+       const meetMajjer = document.querySelector('.meet-majjer');
+       if (meetMajjer) {
+         setTimeout(() => {
+           meetMajjer.classList.add('show');
+         }, 200);
+       }
+       showNavbar();
+       isIntroComplete = true;
+     }, 5500);
+
+    // Gestion de l'apparition des bulles au scroll
+    const textBubbles = document.querySelectorAll('.text-bubble');
+    const phoneContainer = document.querySelector('.phone-container');
+    
+    // Timer pour détecter l'arrêt du scroll
+    let scrollTimer = null;
+    
+    function handleScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const containerTop = phoneContainer.offsetTop;
+      const containerHeight = phoneContainer.offsetHeight;
+      
+      // Activer l'effet de brillance sur la navbar pendant le mouvement du scroll
+      nav.classList.add('scrolling');
+      
+      // Réinitialiser le timer à chaque mouvement de scroll
+      clearTimeout(scrollTimer);
+      
+      // Retirer l'effet de brillance après l'arrêt du scroll (150ms sans mouvement)
+      scrollTimer = setTimeout(() => {
+        nav.classList.remove('scrolling');
+      }, 150);
+      
+      if (isIntroComplete) {
+        const delta = scrollTop - lastScrollY;
+
+        if (scrollTop <= 90) {
+          showNavbar();
+        } else if (delta > SCROLL_THRESHOLD) {
+          scheduleHideNavbar();
+        } else if (delta < -SCROLL_THRESHOLD) {
+          showNavbar();
+        }
+      }
+
+      lastScrollY = scrollTop;
+      
+      // Calculer la position relative du scroll par rapport au conteneur du téléphone
+      const scrollInContainer = scrollTop + windowHeight - containerTop;
+      const scrollProgress = Math.max(0, Math.min(1, scrollInContainer / (containerHeight + windowHeight)));
+
+      textBubbles.forEach(bubble => {
+        const triggerPoint = parseFloat(bubble.getAttribute('data-scroll'));
+        
+        if (scrollProgress >= triggerPoint - 0.1 && scrollProgress <= triggerPoint + 0.2) {
+          bubble.classList.add('visible');
+        } else {
+          bubble.classList.remove('visible');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Vérifier au chargement
+
+    // ========== SCROLL REVEAL SYSTEM ==========
+    // Système générique d'animation au scroll pour tous les éléments
+    // Ajoute automatiquement la classe .reveal aux éléments de chaque section
+    
+    const revealObserverOptions = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        } else {
+          entry.target.classList.remove('show');
+        }
+      });
+    }, revealObserverOptions);
+
+    // Ajouter automatiquement .reveal aux éléments pertinents
+    function autoAddRevealClasses() {
+      const EXCLUDE_SELECTORS = ['.text-bubble', '.cursor-glow', '.phone', '.team-inner'];
+      document.querySelectorAll('main, section').forEach(container => {
+        Array.from(container.children).forEach(child => {
+          const skip = EXCLUDE_SELECTORS.some(sel => child.matches(sel));
+          if (!skip && !child.classList.contains('reveal')) {
+            child.classList.add('reveal');
+          }
+        });
+      });
+      // S'assurer que l'image de téléphone n'est jamais affectée
+      document.querySelectorAll('.phone').forEach(el => {
+        el.classList.remove('reveal', 'show');
+      });
+    }
+
+    // Initialiser tous les éléments avec la classe .reveal
+    function initScrollReveal() {
+      const revealElements = document.querySelectorAll('.reveal:not(.phone)');
+      revealElements.forEach(element => {
+          revealObserver.observe(element);
+      });
+    }
+
+    // Auto-tag + initialisation
+    autoAddRevealClasses();
+    // Fonction pour déclencher les animations après un scroll vers une section
+    function triggerRevealOnSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        // Attendre que le scroll soit terminé
+        const checkScroll = setInterval(() => {
+          const rect = section.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          
+          // Si la section est dans le viewport
+          if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+            clearInterval(checkScroll);
+            const revealElements = section.querySelectorAll('.reveal');
+            revealElements.forEach((element, index) => {
+              setTimeout(() => {
+                if (!element.classList.contains('show')) {
+                  element.classList.add('show');
+                }
+              }, index * 100);
+            });
+          }
+        }, 50);
+        
+        // Arrêter après 2 secondes maximum
+        setTimeout(() => clearInterval(checkScroll), 2000);
+      }
+    }
+
+    // Gérer les clics sur les liens de navigation
+    const navLinks = document.querySelectorAll('a[href^="#"]');
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href && href !== '#' && href.startsWith('#')) {
+          const targetId = href.substring(1);
+          const targetSection = document.getElementById(targetId);
+          
+          if (targetSection) {
+            e.preventDefault();
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Déclencher les animations après le scroll
+            triggerRevealOnSection(targetId);
+            
+            // Mettre à jour l'onglet actif
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            link.classList.add('active');
+          }
+        } else if (href === '#') {
+          // Pour le lien Home
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          navLinks.forEach(navLink => navLink.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Mettre à jour l'onglet actif en fonction de la section visible
+    function updateActiveNavLink() {
+      const scrollPosition = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      
+       // Retrieve the position of the features section
+      const featuresSection = document.getElementById('features');
+      const featuresTop = featuresSection ? featuresSection.offsetTop : Infinity;
+       const pricingSection = document.getElementById('pricing');
+       const pricingTop = pricingSection ? pricingSection.offsetTop : Infinity;
+       const teamHeading = document.getElementById('team-vision') || document.getElementById('team');
+       const teamTop = teamHeading ? teamHeading.offsetTop : Infinity;
+      
+      let currentSection = 'home';
+      
+       // Check pricing first since it sits below features
+       const checkpoint = scrollPosition + windowHeight * 0.3;
+       
+       if (featuresSection && checkpoint >= featuresTop) {
+        currentSection = 'features';
+      }
+      
+       if (pricingSection && checkpoint >= pricingTop) {
+         currentSection = 'pricing';
+       }
+       
+       if (teamHeading && checkpoint >= teamTop) {
+         currentSection = teamHeading.id;
+       }
+        
+        // Update navigation bubbles
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === '#' && currentSection === 'home') {
+          link.classList.add('active');
+        } else if (href === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Appeler updateActiveNavLink lors du scroll
+    window.addEventListener('scroll', () => {
+      updateActiveNavLink();
+    });
+    
+    // Appeler au chargement
+    updateActiveNavLink();
+
+    // Initialiser au chargement
+    initScrollReveal();
+
+    // Réinitialiser après un certain délai pour s'assurer que tout est chargé
+    setTimeout(() => {
+      initScrollReveal();
+    }, 1000);
+
+    // Typewriter animation for "Built by/for students"
+    const studentBuiltSection = document.getElementById('student-built');
+    const typewriterWrapper = document.querySelector('.student-built-typewriter');
+
+    if (studentBuiltSection && typewriterWrapper) {
+      const textNode = typewriterWrapper.querySelector('.typewriter-text');
+      const cursorNode = typewriterWrapper.querySelector('.typewriter-cursor');
+      const firstPhrase = typewriterWrapper.dataset.first || '';
+      const secondPhrase = typewriterWrapper.dataset.second || '';
+      let typewriterStarted = false;
+      let cycleTimeout = null;
+
+      function typeWord(word, speed, done) {
+        const target = word || '';
+        cursorNode.classList.remove('typewriter-cursor--hold');
+
+        if (target.length === 0) {
+          textNode.textContent = '';
+          if (typeof done === 'function') done();
+          return;
+        }
+
+        let i = 0;
+        function step() {
+          textNode.textContent = target.substring(0, i + 1);
+          i += 1;
+          if (i < target.length) {
+            setTimeout(step, speed);
+          } else {
+            textNode.textContent = target;
+            if (typeof done === 'function') done();
+          }
+        }
+        step();
+      }
+
+      function deleteWord(speed, done) {
+        const current = textNode.textContent || '';
+        let i = current.length;
+
+        if (i === 0) {
+          if (typeof done === 'function') done();
+          return;
+        }
+
+        function step() {
+          i -= 1;
+          textNode.textContent = current.substring(0, i);
+          if (i > 0) {
+            setTimeout(step, speed);
+          } else {
+            textNode.textContent = '';
+            if (typeof done === 'function') done();
+          }
+        }
+        step();
+      }
+
+      function startTypewriter() {
+        if (typewriterStarted) return;
+        typewriterStarted = true;
+
+        const phrases = [firstPhrase, secondPhrase].filter(Boolean);
+        if (phrases.length === 0) return;
+
+        let currentIndex = 0;
+
+        function scheduleNextCycle(delay) {
+          if (cycleTimeout) clearTimeout(cycleTimeout);
+          cycleTimeout = setTimeout(() => {
+            cycle();
+          }, delay);
+        }
+
+        function cycle() {
+          if (phrases.length <= 1) return;
+          const nextIndex = (currentIndex + 1) % phrases.length;
+
+          deleteWord(55, () => {
+            typeWord(phrases[nextIndex], 85, () => {
+              currentIndex = nextIndex;
+              scheduleNextCycle(3000);
+            });
+          });
+        }
+
+        textNode.textContent = '';
+        typeWord(phrases[0], 80, () => {
+          if (phrases.length > 1) {
+            scheduleNextCycle(3000);
+          }
+        });
+      }
+
+      const typewriterObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            startTypewriter();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.55 });
+
+      typewriterObserver.observe(studentBuiltSection);
+    }
+
+    // Effet de lumière qui suit le curseur
+    const cursorGlow = document.getElementById('cursorGlow');
+    let mouseX = 0;
+    let mouseY = 0;
+    let glowX = 0;
+    let glowY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorGlow.classList.add('active');
+    });
+
+    // Détecter le survol du téléphone pour intensifier l'effet
+    phoneImg.addEventListener('mouseenter', () => {
+      cursorGlow.classList.add('intensified');
+    });
+
+    phoneImg.addEventListener('mouseleave', () => {
+      cursorGlow.classList.remove('intensified');
+    });
+
+    // Animation fluide pour suivre le curseur
+    function animateGlow() {
+      glowX += (mouseX - glowX) * 0.1;
+      glowY += (mouseY - glowY) * 0.1;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+
+    // Masquer l'effet quand la souris quitte la page
+    document.addEventListener('mouseleave', () => {
+      cursorGlow.classList.remove('active');
+      cursorGlow.classList.remove('intensified');
+    });
+
+    // Gestion du curseur grab/grabbing pour le carrousel
+    const featuresCarousel = document.querySelector('.features-cards-container');
+    if (featuresCarousel) {
+      let isDragging = false;
+      
+      featuresCarousel.addEventListener('mousedown', () => {
+        isDragging = true;
+        featuresCarousel.classList.add('dragging');
+      });
+      
+      featuresCarousel.addEventListener('mouseup', () => {
+        isDragging = false;
+        featuresCarousel.classList.remove('dragging');
+      });
+      
+      featuresCarousel.addEventListener('mouseleave', () => {
+        isDragging = false;
+        featuresCarousel.classList.remove('dragging');
+      });
+    }
+
+    // --- Interactive swipe text handlers ---
+    function attachSwipeHandlers(el, overlayColor) {
+      if (!el) return;
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mx', x + 'px');
+        el.style.setProperty('--my', y + 'px');
+        el.style.setProperty('--swipe-overlay', `radial-gradient(circle at var(--mx) var(--my), ${overlayColor} 0%, ${overlayColor} 15%, rgba(255,255,255,0) 30%)`);
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.setProperty('--swipe-overlay', 'none');
+      });
+    }
+
+    // Attach to elements
+    document.querySelectorAll('.swipe-white').forEach(el => attachSwipeHandlers(el, 'rgba(255,255,255,1)'));
+    document.querySelectorAll('.swipe-orange').forEach(el => attachSwipeHandlers(el, 'rgba(255,122,0,1)'));
+
+    const snapshotTrack = document.querySelector('.snapshot-track');
+    if (snapshotTrack) {
+      const slides = Array.from(snapshotTrack.children);
+      const snapshotContainer = document.querySelector('.snapshot-track-container');
+      const prevBtn = document.querySelector('.snapshot-nav-prev');
+      const nextBtn = document.querySelector('.snapshot-nav-next');
+      const dots = Array.from(document.querySelectorAll('.snapshot-dot'));
+      const totalSlides = slides.length;
+      let snapshotIndex = 0;
+      let autoTimer = null;
+
+      function updateSnapshotPosition() {
+        if (!snapshotContainer) return;
+        const slideHeight = snapshotContainer.offsetHeight;
+        snapshotTrack.style.transform = `translateY(-${snapshotIndex * slideHeight}px)`;
+        dots.forEach((dot, idx) => dot.classList.toggle('active', idx === snapshotIndex));
+      }
+
+      function goToSnapshot(index) {
+        snapshotIndex = (index + totalSlides) % totalSlides;
+        updateSnapshotPosition();
+      }
+
+      function startSnapshotAuto() {
+        stopSnapshotAuto();
+        autoTimer = setInterval(() => {
+          goToSnapshot(snapshotIndex + 1);
+        }, 6000);
+      }
+
+      function stopSnapshotAuto() {
+        if (autoTimer) {
+          clearInterval(autoTimer);
+          autoTimer = null;
+        }
+      }
+
+      prevBtn?.addEventListener('click', () => {
+        goToSnapshot(snapshotIndex - 1);
+        startSnapshotAuto();
+      });
+
+      nextBtn?.addEventListener('click', () => {
+        goToSnapshot(snapshotIndex + 1);
+        startSnapshotAuto();
+      });
+
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+          goToSnapshot(idx);
+          startSnapshotAuto();
+        });
+      });
+
+      window.addEventListener('resize', updateSnapshotPosition);
+
+      goToSnapshot(0);
+      startSnapshotAuto();
+    }
+
+    // Pricing toggle logic
+    const pricingSection = document.getElementById('pricing');
+    if (pricingSection) {
+      const toggleButtons = Array.from(pricingSection.querySelectorAll('.pricing-toggle-btn'));
+      const pricingCards = Array.from(pricingSection.querySelectorAll('.pricing-card'));
+
+      function updatePlan(plan) {
+        toggleButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.plan === plan));
+
+        pricingCards.forEach(card => {
+          const priceWrap = card.querySelector('.pricing-price');
+          if (!priceWrap) return;
+          const monthly = card.querySelector('.price-monthly');
+          const annual = card.querySelector('.price-annual');
+          const period = priceWrap.querySelector('.price-period');
+
+          if (plan === 'annual') {
+            monthly?.classList.remove('active');
+            annual?.classList.add('active');
+            if (period) period.textContent = priceWrap.dataset.periodAnnual || 'per year';
+          } else {
+            annual?.classList.remove('active');
+            monthly?.classList.add('active');
+            if (period) period.textContent = priceWrap.dataset.periodMonthly || 'per month';
+          }
+        });
+      }
+
+      toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('active')) return;
+          updatePlan(btn.dataset.plan);
+        });
+      });
+
+      updatePlan('monthly');
+    }
+
+    // Cursor glow effect that follows the pointer
+
+    // Impact metrics count-up
+    const impactSection = document.getElementById('impact');
+    if (impactSection) {
+      const metricValues = Array.from(impactSection.querySelectorAll('.metric-value'));
+      const defaultValues = metricValues.map(el => el.dataset.prefix ? `${el.dataset.prefix}0${el.dataset.suffix || ''}` : `0${el.dataset.suffix || ''}`);
+
+      function animateMetrics() {
+        metricValues.forEach((valueEl, idx) => {
+          const target = parseFloat(valueEl.dataset.target || '0');
+          const prefix = valueEl.dataset.prefix || '';
+          const suffix = valueEl.dataset.suffix || '';
+          const decimals = parseInt(valueEl.dataset.decimals || '0', 10);
+          const duration = 1500;
+          const startTime = performance.now();
+
+          function update(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const current = target * progress;
+            const formatted = decimals > 0 ? current.toFixed(decimals) : Math.round(current);
+            valueEl.textContent = `${prefix}${formatted}${suffix}`;
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            }
+          }
+
+          requestAnimationFrame(update);
+        });
+      }
+
+      const metricsObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateMetrics();
+          } else {
+            metricValues.forEach((el, idx) => {
+              el.textContent = defaultValues[idx];
+            });
+          }
+        });
+      }, { threshold: 0.4 });
+
+      metricsObserver.observe(impactSection);
+    }
+
+    // Team connector stroke animation
+    const teamSection = document.getElementById('team');
+    if (teamSection) {
+      const teamPath = teamSection.querySelector('.team-path');
+      const teamCards = Array.from(teamSection.querySelectorAll('.team-card'));
+
+      if (teamPath && teamCards.length) {
+        const pathLength = teamPath.getTotalLength();
+        teamPath.style.strokeDasharray = pathLength;
+        teamPath.style.strokeDashoffset = pathLength;
+
+        let currentOffset = pathLength;
+        let currentProgress = 0;
+        let isAnimating = false;
+        const progressByCard = teamCards.map(card => parseFloat(card.dataset.pathProgress || '0'));
+
+        function updateCardStates(progress) {
+          teamCards.forEach((card, index) => {
+            const cardProgress = progressByCard[index] ?? 0;
+            if (progress >= cardProgress - 0.01) {
+              card.classList.add('is-active');
+            } else {
+              card.classList.remove('is-active');
+            }
+          });
+        }
+
+        function animateStroke(targetProgress) {
+          const targetOffset = pathLength * (1 - targetProgress);
+          const startOffset = currentOffset;
+
+          if (Math.abs(targetOffset - startOffset) < 0.5) {
+            currentOffset = targetOffset;
+            teamPath.style.strokeDashoffset = currentOffset;
+            return;
+          }
+
+          const duration = 600;
+          let startTime = null;
+          isAnimating = true;
+
+          function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = startOffset + (targetOffset - startOffset) * eased;
+            teamPath.style.strokeDashoffset = value;
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              currentOffset = targetOffset;
+              isAnimating = false;
+            }
+          }
+
+          requestAnimationFrame(step);
+        }
+
+        function computeTargetProgress() {
+          let target = 0;
+          const triggerLine = window.innerHeight * 0.65;
+
+          teamCards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const progressValue = parseFloat(card.dataset.pathProgress || '0');
+            if (rect.top <= triggerLine && !Number.isNaN(progressValue)) {
+              const clamped = Math.max(0, Math.min(progressValue, 1));
+              target = Math.max(target, clamped);
+            }
+          });
+
+          if (Math.abs(target - currentProgress) > 0.01) {
+            currentProgress = target;
+            updateCardStates(currentProgress);
+            animateStroke(target);
+          } else if (!isAnimating) {
+            const offset = pathLength * (1 - currentProgress);
+            currentOffset = offset;
+            teamPath.style.strokeDashoffset = offset;
+            updateCardStates(currentProgress);
+          }
+        }
+
+        let ticking = false;
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(() => {
+              computeTargetProgress();
+              ticking = false;
+            });
+          }
+        }
+
+        window.addEventListener('scroll', onScroll);
+        window.addEventListener('resize', () => {
+          teamPath.style.strokeDasharray = pathLength;
+          currentOffset = pathLength * (1 - currentProgress);
+          teamPath.style.strokeDashoffset = currentOffset;
+          onScroll();
+        });
+
+        computeTargetProgress();
+        updateCardStates(currentProgress);
+      }
+    }
+
+  </script>
+</body>
+</html>
